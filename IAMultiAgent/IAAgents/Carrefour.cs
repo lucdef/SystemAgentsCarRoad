@@ -10,7 +10,7 @@ namespace IAAgents
     public class Carrefour
     {
        
-        public event CarrefourUpdated oceanUpdatedEvent;
+        public event CarrefourUpdated carrefourUpdatedEvent;
 
 
         const uint Height = 480;
@@ -23,6 +23,7 @@ namespace IAAgents
 
         public Carrefour()
         {
+            nbVehicule = 1;
             lstVehicule = new List<Vehicule>();
             seedAleatoire = new Random();
             for(int i=0;i<nbVehicule;i++)
@@ -56,7 +57,18 @@ namespace IAAgents
         }
         public void UpdateCarrefour()
         {
-
+            UpdateVoiture();
+            if (carrefourUpdatedEvent != null)
+            {
+                carrefourUpdatedEvent(lstVehicule );
+            }
+        }
+        private void UpdateVoiture()
+        {
+            foreach (Vehicule vehicule in lstVehicule)
+            {
+                vehicule.Update(lstVehicule);
+            }
         }
 
     }

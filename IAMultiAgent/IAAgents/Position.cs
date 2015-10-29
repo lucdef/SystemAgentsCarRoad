@@ -16,5 +16,13 @@ namespace IAAgents
             this.x = x;
             this.y = y;
         }
+        public double GetX()
+        {
+            return this.x;
+        }
+        public double GetY()
+        {
+            return this.y;
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace IAMultiAgent
         private void MainWindow_Loaded1(object sender, RoutedEventArgs e)
         {
             carrefour = new Carrefour();
-            carrefour.oceanUpdatedEvent += Carrefour_carrefourUpdated;
+            carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -44,13 +44,15 @@ namespace IAMultiAgent
             carrefour.UpdateCarrefour();
         }
 
-        public void MainWindow_Loaded()
-        {
-
-        }
+       
         private void Carrefour_carrefourUpdated(List<Vehicule> lstVehicule)
         {
-
+            carrefourCanvas.Children.Clear();
+            foreach (Vehicule vehicule in lstVehicule)
+            {
+                DrawVehicule(vehicule);
+            }
+            carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
         {
@@ -62,7 +64,8 @@ namespace IAMultiAgent
             voiture.Fill =  new SolidColorBrush(couleur);
             voiture.RadiusX = 90;
             voiture.Stroke  = Brushes.Black;
-            //voiture.Margin
+
+            voiture.Margin = new Thickness(10,320,10,10);
             carrefourCanvas.Children.Add(voiture);
 
         }

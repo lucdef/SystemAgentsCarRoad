@@ -14,7 +14,9 @@ namespace IAAgents
         uint largeur;
         float vitesseMax;
         Direction direction;
+        protected const uint STEP = 3;
         float vitesse;
+        uint angle;
         static Random seedCouleurRandom;
 
         Position position;
@@ -68,6 +70,21 @@ namespace IAAgents
         public uint GetLargeur()
         {
             return this.largeur;
+        }
+        public void Update(List<Vehicule>lstVehicule)
+        {
+            foreach (Vehicule vehicule in lstVehicule)
+            {
+
+            }
+            UpdatePosition();
+
+        }
+        private void UpdatePosition()
+        {
+            double posX = this.position.GetX()+ STEP * vitesse;
+            double posY =this.position.GetY() + STEP * vitesse;
+            this.position = new Position(posX, posY);
         }
     }
 }
