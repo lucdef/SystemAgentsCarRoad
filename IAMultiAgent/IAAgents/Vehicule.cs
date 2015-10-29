@@ -6,34 +6,60 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
-    enum Direction
-    {
-        G,
-        D,
-        F
-    }
+    
 
     public class Vehicule
     {
-        float longueur;
-        float largeur;
-        float vMax;
-        Direction dir;
+        uint longueur;
+        uint largeur;
+        float vitesseMax;
+        Direction direction;
+        float vitesse;
+        static Random seedCouleurRandom;
 
-        Position pos;
-        Vehicule vDevant; 
-        int a;
-        bool arret;
+        Position position;
+        Vehicule vehiculeDevant; 
+        bool estArreter;
+        string couleur;
 
-        public Vehicule(float longueur, float largeur, float vMax, Direction dir, Position pos)
+
+        public Vehicule( Direction dir, Position pos)
         {
-            this.longueur = longueur;
-            this.largeur = largeur;
-            this.vMax = vMax;
-            this.dir = dir;
-            this.pos = pos;
-            this.vDevant = null;
-            this.arret = false;
+           
+            this.longueur = 8;
+            this.largeur = 4;
+            this.vitesse = 0;
+            this.vitesseMax = 50;
+            this.direction = dir;
+            this.position = pos;
+            this.vehiculeDevant = null;
+            this.estArreter = false;
+            seedCouleurRandom = new Random();
+            this.couleur = this.SetCouleur();
+        }
+        private string  SetCouleur()
+        {
+            string couleur;
+            int nbAleatoire = seedCouleurRandom.Next(0, 3);
+            switch(nbAleatoire)
+            {
+                case 0:
+                    couleur = "#FF0000";
+                    break;
+                case 1:
+                    couleur = "#0000CC";
+                    break;
+                case 2:
+                     couleur = "#000000";
+                    break;
+                case 3:
+                    couleur = "#C0C0C0";
+                    break;
+                default:
+                    couleur = "#C0C0C0";
+                    break;
+            }
+            return couleur;
         }
     }
 }

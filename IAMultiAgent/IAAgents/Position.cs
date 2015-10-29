@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
-    class Position
+    public class Position
     {
         double x {get; set;}
         double y {get; set;}
