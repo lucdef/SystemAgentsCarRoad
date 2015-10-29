@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
+    public delegate void CarrefourUpdated(List<Vehicule> lstVehicule);
     public class Carrefour
     {
-        public delegate void CarrefourUpdated(List<Vehicule> lstVehicule);
+       
         public event CarrefourUpdated oceanUpdatedEvent;
 
 
@@ -20,22 +21,20 @@ namespace IAAgents
 
         List<Vehicule> lstVehicule;
 
-        public event CarrefourUpdated oceanUpdatedEvent;
-
         public Carrefour()
         {
             lstVehicule = new List<Vehicule>();
             seedAleatoire = new Random();
             for(int i=0;i<nbVehicule;i++)
             {
-                Vehicule vehicule = new Vehicule(this.GetRandomDirection,this.GetRandomPosition());
+                Vehicule vehicule = new Vehicule(this.GetRandomDirection(),this.GetRandomPosition());
                 lstVehicule.Add(vehicule);
             }
         }
         private Direction GetRandomDirection()
         {
             Direction direction;
-            uint nbAleatoire = seedAleatoire.Next(0, 1);
+            uint nbAleatoire = (uint) seedAleatoire.Next(0, 1);
             switch(nbAleatoire)
             {
                 case 0:
@@ -53,7 +52,7 @@ namespace IAAgents
         }
         private Position GetRandomPosition()
         {
-
+            return new Position(50,50);
         }
         public void UpdateCarrefour()
         {

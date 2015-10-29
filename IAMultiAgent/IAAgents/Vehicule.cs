@@ -20,7 +20,7 @@ namespace IAAgents
         Position position;
         Vehicule vehiculeDevant; 
         bool estArreter;
-        string couleur;
+        public string couleur { private set; get; }
 
 
         public Vehicule( Direction dir, Position pos)
@@ -60,6 +60,14 @@ namespace IAAgents
                     break;
             }
             return couleur;
+        }
+        public uint GetLongueur()
+        {
+            return this.longueur;
+        }
+        public uint GetLargeur()
+        {
+            return this.largeur;
         }
     }
 }

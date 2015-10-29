@@ -93,6 +93,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IAAgents\IAAgents.csproj">
+      <Project>{76ec78fb-0c44-4550-ac2f-d3c437eb4095}</Project>
+      <Name>IAAgents</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

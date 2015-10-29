@@ -1,8 +1,9 @@
 ﻿<Window x:Class="IAMultiAgent.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="480" Width="640">
     <Grid>
-        
+        <Canvas Name="carrefourCanvas" HorizontalAlignment="Left" Height="480" Margin="0,0,0,0" VerticalAlignment="Top" Width="640"/>
+
     </Grid>
 </Window>
