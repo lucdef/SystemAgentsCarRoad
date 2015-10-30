@@ -86,5 +86,19 @@ namespace IAAgents
             double posY =this.position.GetY() + STEP * vitesse;
             this.position = new Position(posX, posY);
         }
+
+        public Position GetPosition( )
+        {
+            return position;
+        }
+
+        public Direction GetDirection( )
+        {
+            return direction;
+        }
+        public float GetSpeed()
+        {
+            return vitesse;
+        }
     }
 }

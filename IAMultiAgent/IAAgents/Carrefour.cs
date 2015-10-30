@@ -8,17 +8,14 @@ namespace IAAgents
 {
     public delegate void CarrefourUpdated(List<Vehicule> lstVehicule);
     public class Carrefour
-    {
-       
+    {  
         public event CarrefourUpdated carrefourUpdatedEvent;
-
 
         const uint Height = 480;
         const uint Width = 640;
         const string Couleur = "#ffffff";
         static Random seedAleatoire;
         uint nbVehicule;
-
         List<Vehicule> lstVehicule;
 
         public Carrefour()
@@ -26,12 +23,53 @@ namespace IAAgents
             nbVehicule = 1;
             lstVehicule = new List<Vehicule>();
             seedAleatoire = new Random();
+
             for(int i=0;i<nbVehicule;i++)
             {
                 Vehicule vehicule = new Vehicule(this.GetRandomDirection(),this.GetRandomPosition());
                 lstVehicule.Add(vehicule);
             }
         }
+
+        public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
+        {
+            double dDeltaDistance = 0.0f;
+            Position pVoitureAction;
+            Position pVoitureToAvoid;
+            //Direction dVoitureAction;
+            //Direction dVoitureToAvoid;
+
+            pVoitureAction = vAction.GetPosition();
+            pVoitureToAvoid = vToAvoid.GetPosition();
+            //dVoitureAction = vAction.GetDirection();
+            //dVoitureToAvoid = vToAvoid.GetDirection();
+
+            //if (dVoitureAction == Direction.GAUCHE)
+            //{
+            //  if(dVoitureToAvoid == Direction.GAUCHE)
+            //  {
+            double dToAvoid =  pVoitureToAvoid.GetX();
+            double dAction = pVoitureAction.GetX();
+            dDeltaDistance = dToAvoid - dAction;
+            //}
+            //}
+            return dDeltaDistance;
+        }
+
+        public float calcul_distance_freinage(Vehicule vToBrake)
+        {
+            float dDistFreinage = 0.0f;
+            float fActualSpeed = vToBrake.GetSpeed();
+            fActualSpeed /= 10;
+            return dDistFreinage * dDistFreinage;
+        }
+
+        public void calcul_courbe_vitesse_distance(Vehicule vCarAction)
+        {
+            float fDistFreinage = calcul_distance_freinage(vCarAction);
+         //   int iCoefDir = VitMax2(km / h) / (iDistFreinage - ((voiture_2.longueur) / 3))
+        }
+
         private Direction GetRandomDirection()
         {
             Direction direction;
