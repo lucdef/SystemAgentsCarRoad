@@ -20,6 +20,7 @@ namespace IAAgents
         uint nbVehicule;
 
         List<Vehicule> lstVehicule;
+        List<Feu> lstFeux;
 
         public Carrefour()
         {
@@ -28,8 +29,13 @@ namespace IAAgents
             seedAleatoire = new Random();
             for(int i=0;i<nbVehicule;i++)
             {
-                Vehicule vehicule = new Vehicule(this.GetRandomDirection(),this.GetRandomPosition());
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), this.GetRandomPosition());
                 lstVehicule.Add(vehicule);
+            }
+            for(int f=0;f<4;f++)
+            {
+                //Génération des feux attention changer la position 
+                lstFeux.Add(new Feu(false,new TimeSpan(0,0,15),new TimeSpan(0,0,15),new Position(50,50)));
             }
         }
         private Direction GetRandomDirection()
@@ -68,6 +74,17 @@ namespace IAAgents
             foreach (Vehicule vehicule in lstVehicule)
             {
                 vehicule.Update(lstVehicule);
+            }
+        }
+        private void UpdateFeux()
+        {
+            foreach(Feu feu in lstFeux)
+            {
+                feu.tempsActivite.Add(new TimeSpan(0, 0, 0, 0, 15));
+                if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))
+                    {
+                    feu.ToggleFeu();
+                }
             }
         }
 

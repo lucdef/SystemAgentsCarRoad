@@ -8,15 +8,16 @@ namespace IAAgents
 {
     
 
-    public class Vehicule
+    public abstract class Vehicule
     {
-        uint longueur;
-        uint largeur;
-        float vitesseMax;
+        protected uint longueur;
+       protected uint largeur;
+        protected double vitesseMax;
         Direction direction;
         protected const uint STEP = 3;
-        float vitesse;
-        uint angle;
+        protected float vitesse;
+        protected uint angle;
+        
         static Random seedCouleurRandom;
 
         Position position;
@@ -28,8 +29,8 @@ namespace IAAgents
         public Vehicule( Direction dir, Position pos)
         {
            
-            this.longueur = 8;
-            this.largeur = 4;
+            this.longueur = 24;
+            this.largeur = 12;
             this.vitesse = 0;
             this.vitesseMax = 50;
             this.direction = dir;
