@@ -34,25 +34,17 @@ namespace IAAgents
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
         {
             double dDeltaDistance = 0.0f;
+            double xToAvoid = 0.0f;
+            double xAction = 0.0f;
             Position pVoitureAction;
             Position pVoitureToAvoid;
-            //Direction dVoitureAction;
-            //Direction dVoitureToAvoid;
 
-            pVoitureAction = vAction.GetPosition();
-            pVoitureToAvoid = vToAvoid.GetPosition();
-            //dVoitureAction = vAction.GetDirection();
-            //dVoitureToAvoid = vToAvoid.GetDirection();
+            pVoitureAction      =   vAction.GetPosition();
+            pVoitureToAvoid     =   vToAvoid.GetPosition();
+            xToAvoid            =   pVoitureToAvoid.GetX();
+            xAction             =   pVoitureAction.GetX();
+            dDeltaDistance      =   xToAvoid - xAction;
 
-            //if (dVoitureAction == Direction.GAUCHE)
-            //{
-            //  if(dVoitureToAvoid == Direction.GAUCHE)
-            //  {
-            double dToAvoid =  pVoitureToAvoid.GetX();
-            double dAction = pVoitureAction.GetX();
-            dDeltaDistance = dToAvoid - dAction;
-            //}
-            //}
             return dDeltaDistance;
         }
 
@@ -60,6 +52,8 @@ namespace IAAgents
         {
             float dDistFreinage = 0.0f;
             float fActualSpeed = vToBrake.GetSpeed();
+            //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
+            //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
             fActualSpeed /= 10;
             return dDistFreinage * dDistFreinage;
         }
@@ -67,7 +61,43 @@ namespace IAAgents
         public void calcul_courbe_vitesse_distance(Vehicule vCarAction)
         {
             float fDistFreinage = calcul_distance_freinage(vCarAction);
+
          //   int iCoefDir = VitMax2(km / h) / (iDistFreinage - ((voiture_2.longueur) / 3))
+        }
+
+        public void slow_down_or_accelerate()
+        {
+            if (!voiture_devant_exist)
+                vitesse++->vitesse_max
+else //(voiture_devant_exist)
+            {
+                if (feu_vert)
+                {
+                    calcul_distance_entre_les_deux_voitures
+                    calcul_distance_freinage_voiture_derriere
+              
+    //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
+                    if (distance_entre_les_deux_voitures + ((voiture_2.longueur) / 3) >= distance_freinage_voiture_derriere)
+                    {
+                        vitesse_voiture_derriere++
+
+      if (vitesse_voiture_derriere >= vitesse_max)
+                            vitesse_voiture_derriere = vitesse_max
+    }
+                    else  //  On doit freiner car la distance de freinage est insuffisante
+                    {
+                        vitesse_voiture_derriere--
+                
+      if (vitesse_voiture_derriere <= vitesse_min)
+                            vitesse_voiture_derriere = vitesse_min
+                    }
+                }
+                else    //  feu rouge
+                {
+                    vitesse_voiture_derriere--
+                }
+            }
+
         }
 
         private Direction GetRandomDirection()
