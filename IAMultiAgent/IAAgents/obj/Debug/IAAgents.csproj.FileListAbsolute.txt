@@ -1,0 +1,5 @@
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAAgents\obj\Debug\IAAgents.csprojResolveAssemblyReference.cache
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAAgents\bin\Debug\IAAgents.dll
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAAgents\bin\Debug\IAAgents.pdb
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAAgents\obj\Debug\IAAgents.dll
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAAgents\obj\Debug\IAAgents.pdb

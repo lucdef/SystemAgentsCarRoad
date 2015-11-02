@@ -1,0 +1,15 @@
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\bin\Debug\IAMultiAgent.exe.config
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.csprojResolveAssemblyReference.cache
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\MainWindow.baml
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\MainWindow.g.cs
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\App.g.cs
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent_MarkupCompile.cache
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.g.resources
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.Properties.Resources.resources
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.csproj.GenerateResource.Cache
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\bin\Debug\IAMultiAgent.exe
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\bin\Debug\IAMultiAgent.pdb
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\bin\Debug\IAAgents.dll
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\bin\Debug\IAAgents.pdb
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.exe
+C:\Users\vincent\Documents\TP\IA\TP_IA_LUCVINGIL\GitHubVisualStudio\SystemAgentsCarRoad\IAMultiAgent\IAMultiAgent\obj\Debug\IAMultiAgent.pdb
