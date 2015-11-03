@@ -71,6 +71,18 @@ namespace IAAgents
         {
             return this.largeur;
         }
+        public float GetVitesse()
+        {
+            return this.vitesse;
+        }
+        public Position GetPosition()
+        {
+            return this.position;
+        }
+        public Vehicule vDevant()
+        {
+            return this.vehiculeDevant;
+        }
         public void Update(List<Vehicule>lstVehicule)
         {
             foreach (Vehicule vehicule in lstVehicule)
@@ -86,5 +98,69 @@ namespace IAAgents
             double posY =this.position.GetY() + STEP * vitesse;
             this.position = new Position(posX, posY);
         }
+
+        public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
+        {
+            double dDeltaDistance = 0.0f;
+            double xToAvoid = 0.0f;
+            double xAction = 0.0f;
+            Position pVoitureAction;
+            Position pVoitureToAvoid;
+
+            pVoitureAction = GetPosition();
+            pVoitureToAvoid = vToAvoid.GetPosition();
+            xToAvoid = pVoitureToAvoid.GetX();
+            xAction = pVoitureAction.GetX();
+            dDeltaDistance = xToAvoid - xAction;
+
+            return dDeltaDistance;
+        }
+
+        public float calcul_distance_freinage(Vehicule vToBrake)
+        {
+            float dDistFreinage = 0.0f;
+            float fActualSpeedVehiculeToBreak = vToBrake.GetVitesse();
+            //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
+            //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
+            fActualSpeedVehiculeToBreak /= 10;
+            return dDistFreinage * dDistFreinage;
+        }
+
+        public void calcul_courbe_vitesse_distance(Vehicule vCarAction)
+        {
+            float fDistFreinage = calcul_distance_freinage(vCarAction);
+
+            float iCoefDir = vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
+        }
+#if false
+        public void slow_down_or_accelerate()
+        {
+            if (!voiture_devant_exist)
+                vitesse++->vitesse_max
+            else //(voiture_devant_exist)
+            {
+                if (feu_vert)
+                {
+                    calcul_distance_entre_les_deux_voitures
+                    calcul_distance_freinage_voiture_derriere
+
+                    //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
+                    if (distance_entre_les_deux_voitures + ((voiture_2.longueur) / 3) >= distance_freinage_voiture_derriere)
+                    {
+                        if (vitesse_voiture_derriere <= vitesse_max)
+                            vitesse_voiture_derriere++
+                    }
+                    else  //  On doit freiner car la distance de freinage est insuffisante
+                    {
+                        if (vitesse_voiture_derriere >= vitesse_min)
+                        vitesse_voiture_derriere--
+                    }
+                }
+                else    //  feu rouge
+                    vitesse_voiture_derriere--
+            } 
+#endif
+
     }
+
 }
