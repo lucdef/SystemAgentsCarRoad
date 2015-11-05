@@ -65,7 +65,7 @@ namespace IAMultiAgent
             voiture.RadiusX = 90;
             voiture.Stroke  = Brushes.Black;
 
-            voiture.Margin = new Thickness(10,320,10,10);
+            voiture.Margin = new Thickness(vehicule.GetPosition().GetX(),vehicule.GetPosition().GetY(),0,0);
             carrefourCanvas.Children.Add(voiture);
 
         }

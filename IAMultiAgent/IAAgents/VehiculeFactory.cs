@@ -9,19 +9,20 @@ namespace IAAgents
     public static class VehiculeFactory
     {
         static Random randomVehiculeGenerator;
-        public static Vehicule GetVehicule(Direction dir,Position position)
+        public static Vehicule GetVehicule(Direction dir,List<Route> route)
         {
+            randomVehiculeGenerator = new Random();
             double nb = (double)randomVehiculeGenerator.Next(0, 100) / 100;
             Vehicule vehicule;
             if(nb<=0.25)
             {
-                return vehicule = new Camion(dir,position,32,12,80);
+                return vehicule = new Camion(dir,route,32,12,80);
             }
             if(nb>0.25)
             {
-                return vehicule = new Voiture(dir,position,24,12,90);
+                return vehicule = new Voiture(dir,route,24,12,90);
             }
-            return new Voiture(dir, position, 24, 12, 90);
+            return new Voiture(dir, route, 24, 12, 90);
 
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace IAAgents
 {
     
@@ -15,8 +16,22 @@ namespace IAAgents
         protected double vitesseMax;
         Direction direction;
         protected const uint STEP = 3;
-        protected float vitesse;
+        protected double vitesse;
         protected uint angle;
+        protected List<Route> itineraire { get; set; }
+        protected int indexRouteActuel { get; set; }
+
+        public List<Route>GetItineraire()
+        {
+            return this.itineraire;
+        }
+        public Route GetRouteActuel()
+        {
+            return this.itineraire.ElementAt(this.indexRouteActuel);
+        }
+        
+
+
         
         static Random seedCouleurRandom;
 
@@ -26,19 +41,43 @@ namespace IAAgents
         public string couleur { private set; get; }
 
 
-        public Vehicule( Direction dir, Position pos)
+        public Vehicule( Direction dir,List<Route> itineraire)
         {
-           
+            this.itineraire = itineraire;
             this.longueur = 24;
             this.largeur = 12;
-            this.vitesse = 0;
+            this.vitesse = 5;
             this.vitesseMax = 50;
             this.direction = dir;
-            this.position = pos;
             this.vehiculeDevant = null;
             this.estArreter = false;
             seedCouleurRandom = new Random();
             this.couleur = this.SetCouleur();
+            this.angle = 90;
+           
+        }
+        public void GetPositionInit()
+        {
+            Route routeInitial = this.itineraire.ElementAt(0);
+            Direction direction = routeInitial.GetDirection();
+            double X = 0;
+            double Y = 0;
+            switch(direction)
+            {
+                case Direction.EN_FACE:
+                     X = (routeInitial.GetPosition().GetX() + routeInitial.GetLargeur()/2)-this.GetLargeur()/2;
+                     Y = routeInitial.GetPosition().GetY()-this.longueur;
+                    break;
+                case Direction.DROITE:
+                     X = routeInitial.GetPosition().GetX()-this.largeur;
+                     Y = (routeInitial.GetPosition().GetY()+routeInitial.GetLargeur()/2)-this.GetLargeur() / 2;
+                    break;
+                        case Direction.GAUCHE:
+                    X = routeInitial.GetPosition().GetX() + this.largeur;
+                    Y = (routeInitial.GetPosition().GetY() + routeInitial.GetLargeur() / 2) - this.largeur / 2;
+                    break;
+            }
+            this.position =  new Position(X, Y);
         }
         private string  SetCouleur()
         {
@@ -72,7 +111,7 @@ namespace IAAgents
         {
             return this.largeur;
         }
-        public float GetVitesse()
+        public double GetVitesse()
         {
             return this.vitesse;
         }
@@ -88,16 +127,38 @@ namespace IAAgents
         {
             foreach (Vehicule vehicule in lstVehicule)
             {
-
+                if(vitesse<vitesseMax)
+                {
+                  double vitesse =this.vitesse*1.2;
+                    this.vitesse = this.vitesseMax < this.vitesse ? vitesseMax : vitesse;
+                }
+                
             }
             UpdatePosition();
 
         }
+        //Méthode permettant de déterminer le vehicule devant
+        private Vehicule GetVehiculeDevant(Vehicule vehicule,List<Vehicule>lstVehicule)
+        {
+            if(this.direction==Direction.EN_FACE)
+            {
+                Vehicule vehiculeDevant= lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE&&v!=vehicule).OrderBy(v=>vehicule.GetPosition().GetY()-v.GetPosition().GetY()).First();
+            }
+            return vehicule;
+        }
+
+       
+
         private void UpdatePosition()
         {
-            double posX = this.position.GetX()+ STEP * vitesse;
-            double posY =this.position.GetY() + STEP * vitesse;
-            this.position = new Position(posX, posY);
+            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            {
+
+
+                double posX = this.GetPosition().GetX();
+                double posY = this.position.GetY() + STEP * vitesse;
+                this.position = new Position(posX, posY);
+            }
         }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
@@ -120,7 +181,7 @@ namespace IAAgents
         public float calcul_distance_freinage(Vehicule vToBrake)
         {
             float dDistFreinage = 0.0f;
-            float fActualSpeedVehiculeToBreak = vToBrake.GetVitesse();
+            float fActualSpeedVehiculeToBreak =(float) vToBrake.GetVitesse();
             //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
             //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
             fActualSpeedVehiculeToBreak /= 10;
@@ -131,7 +192,7 @@ namespace IAAgents
         {
             float fDistFreinage = calcul_distance_freinage(vCarAction);
 
-            float iCoefDir = vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
+            float iCoefDir = (float) vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
         }
 #if false
         public void slow_down_or_accelerate()
@@ -161,7 +222,11 @@ namespace IAAgents
                     vitesse_voiture_derriere--
             } 
 #endif
-
+        public uint getAngle()
+        {
+            return this.angle;
+        }
     }
+   
 
 }

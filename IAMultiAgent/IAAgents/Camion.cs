@@ -8,7 +8,7 @@ namespace IAAgents
 {
     public class Camion : Vehicule
     {
-        public Camion(Direction dir, Position pos, uint longeur, uint largeur, float vitesseMax) : base(dir, pos)
+        public Camion(Direction dir, List<Route> lstRoute, uint longeur, uint largeur, float vitesseMax) : base(dir, lstRoute)
         {
             this.longueur = longeur;
             this.largeur = largeur;

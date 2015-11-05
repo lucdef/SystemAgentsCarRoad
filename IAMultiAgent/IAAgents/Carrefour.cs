@@ -21,15 +21,20 @@ namespace IAAgents
 
         List<Vehicule> lstVehicule;
         List<Feu> lstFeux;
+        List<Route> lstRoute;
 
         public Carrefour()
         {
             nbVehicule = 1;
             lstVehicule = new List<Vehicule>();
+            lstFeux = new List<Feu>();
+            lstRoute = new List<Route>();
+            GenerateRoute();
             seedAleatoire = new Random();
             for(int i=0;i<nbVehicule;i++)
             {
-                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), this.GetRandomPosition());
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), lstRoute);
+                vehicule.GetPositionInit();
                 lstVehicule.Add(vehicule);
             }
             for(int f=0;f<4;f++)
@@ -37,6 +42,11 @@ namespace IAAgents
                 //Génération des feux attention changer la position 
                 lstFeux.Add(new Feu(false,new TimeSpan(0,0,15),new TimeSpan(0,0,15),new Position(50,50)));
             }
+        }
+        private void GenerateRoute()
+        {
+            Route route = new Route(300,20,new Position(290,0),Direction.EN_FACE);
+            this.lstRoute.Add(route);
         }
         private Direction GetRandomDirection()
         {
@@ -73,8 +83,14 @@ namespace IAAgents
         {
             foreach (Vehicule vehicule in lstVehicule)
             {
+
                 vehicule.Update(lstVehicule);
+                
             }
+        }
+        private void SetInitPositionVehicule(Vehicule vehicule)
+        {
+            
         }
         private void UpdateFeux()
         {
