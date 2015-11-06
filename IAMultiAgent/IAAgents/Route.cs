@@ -13,6 +13,7 @@ namespace IAAgents
         uint  longueur;
         Position position;
         Direction direction;
+        Feu feu;
         public Route(uint longueur,uint largeur,Position position,Direction direction)
         {
             routeLie = new List<KeyValuePair<Direction,Route>>();
@@ -42,5 +43,9 @@ namespace IAAgents
             this.routeLie = routes;
         }
 
+        internal List<KeyValuePair<Direction,Route>> getRouteLie()
+        {
+            return this.routeLie;
+        }
     }
 }

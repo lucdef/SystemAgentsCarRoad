@@ -33,7 +33,7 @@ namespace IAAgents
             seedAleatoire = new Random();
             for(int i=0;i<nbVehicule;i++)
             {
-                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), lstRoute);
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
                 vehicule.GetPositionInit();
                 lstVehicule.Add(vehicule);
             }
@@ -81,17 +81,45 @@ namespace IAAgents
         }
         private void UpdateVoiture()
         {
+            List<int> lstVehiculeASupprimer = new List<int>();
             foreach (Vehicule vehicule in lstVehicule)
             {
 
                 vehicule.Update(lstVehicule);
+                //On detruit si hors de la fenêtre
+                if(vehicule.getIndexRouteActuel()==1)
+                {
+                    if(vehicule.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+                    {
+                        if(vehicule.GetPosition().GetY()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetRouteActuel().GetLongueur())
+                        {
+                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                        }
+                    }
+                    if(vehicule.GetRouteActuel().GetDirection()==Direction.DROITE)
+                    {
+                        if(vehicule.GetPosition().GetX()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetLongueur())
+                        {
+                           
+                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                        }
+                    }
+                }
+                
                 
             }
+            foreach(int index in lstVehiculeASupprimer)
+            {
+                lstVehicule.RemoveAt(index);
+            }
+            if(nbVehicule>lstVehicule.Count)
+            {
+                GenererVehicule(lstVehicule.Count);
+            }
         }
-        private void SetInitPositionVehicule(Vehicule vehicule)
-        {
-            
-        }
+
+        
+        
         private void UpdateFeux()
         {
             foreach(Feu feu in lstFeux)
@@ -102,6 +130,31 @@ namespace IAAgents
                     feu.ToggleFeu();
                 }
             }
+        }
+        //Méthode permettant d'ajouter des voitures de manière aléatoire
+        private void GenererVehicule(int NbVehiculeToAdd)
+        {
+            for(int i=0;i<nbVehicule;i++)
+            {
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(),GenererItineraire());
+                this.lstVehicule.Add(vehicule);
+            }
+        }
+        //Méthode permettant de générer un itinéraire aléatoire pour une voiture
+        private List<Route> GenererItineraire()
+        {
+            List<Route> itineraire = new List<Route>();
+            Route route = this.lstRoute.Find(r => r.GetDirection() == GetRandomDirection());
+            itineraire.Add(route);
+            Route route2 = route.getRouteLie().ElementAt(seedAleatoire.Next(0, route.getRouteLie().Count()-1)).Value;
+            itineraire.Add(route2);
+            return itineraire;
+            
+
+        }
+        private void DestructeurVehicule(Vehicule vehicule)
+        {
+
         }
         public List<Vehicule> GetListVehicule()
         {

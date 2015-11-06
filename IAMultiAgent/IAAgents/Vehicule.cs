@@ -103,6 +103,12 @@ namespace IAAgents
             }
             return couleur;
         }
+
+        internal int getIndexRouteActuel()
+        {
+            return this.indexRouteActuel; 
+        }
+
         public uint GetLongueur()
         {
             return this.longueur;
