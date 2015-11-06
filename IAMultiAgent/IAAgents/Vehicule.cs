@@ -123,6 +123,11 @@ namespace IAAgents
         {
             return this.vehiculeDevant;
         }
+        public uint getAngle()
+        {
+            return this.angle;
+        }
+
         public void Update(List<Vehicule>lstVehicule)
         {
             foreach (Vehicule vehicule in lstVehicule)
@@ -140,11 +145,12 @@ namespace IAAgents
         //Méthode permettant de déterminer le vehicule devant
         private Vehicule GetVehiculeDevant(Vehicule vehicule,List<Vehicule>lstVehicule)
         {
-            if(this.direction==Direction.EN_FACE)
+            Vehicule vehiculeDevant = null;
+            if (this.direction==Direction.EN_FACE)
             {
-                Vehicule vehiculeDevant= lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE&&v!=vehicule).OrderBy(v=>vehicule.GetPosition().GetY()-v.GetPosition().GetY()).First();
+                vehiculeDevant = lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE&&v!=vehicule).OrderBy(v=>vehicule.GetPosition().GetY()-v.GetPosition().GetY()).First();
             }
-            return vehicule;
+            return vehiculeDevant;
         }
 
        
@@ -153,27 +159,38 @@ namespace IAAgents
         {
             if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
+                slow_down_or_accelerate();
 
-
-                double posX = this.GetPosition().GetX();
-                double posY = this.position.GetY() + STEP * vitesse;
-                this.position = new Position(posX, posY);
+                //double posX = this.GetPosition().GetX();
+                //double posY = this.position.GetY() + STEP * vitesse;
+                //this.position = new Position(posX, posY);
             }
         }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
         {
             double dDeltaDistance = 0.0f;
-            double xToAvoid = 0.0f;
-            double xAction = 0.0f;
+            double xyToAvoid = 0.0f;
+            double xyAction = 0.0f;
             Position pVoitureAction;
             Position pVoitureToAvoid;
-
+            
+            //  Récupération de la position actuelle de la voiture de devant et de derrière
             pVoitureAction = GetPosition();
             pVoitureToAvoid = vToAvoid.GetPosition();
-            xToAvoid = pVoitureToAvoid.GetX();
-            xAction = pVoitureAction.GetX();
-            dDeltaDistance = xToAvoid - xAction;
+
+            //  Récupération des positions, soit en X ou soit en Y suivant dans quel direction le véhicule de derrière circule
+            if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
+            {
+                xyToAvoid = pVoitureToAvoid.GetX();
+                xyAction = pVoitureAction.GetX();
+            }
+            else
+            {
+                xyToAvoid = pVoitureToAvoid.GetY();
+                xyAction = pVoitureAction.GetY();
+            }
+            dDeltaDistance = xyToAvoid - xyAction;
 
             return dDeltaDistance;
         }
@@ -192,41 +209,46 @@ namespace IAAgents
         {
             float fDistFreinage = calcul_distance_freinage(vCarAction);
 
+            //  Calcul du coefficient directeur pour la courbe (abscisse : distance; ordonnée : vitesse)
             float iCoefDir = (float) vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
         }
-#if false
-        public void slow_down_or_accelerate()
+#if true
+        private void slow_down_or_accelerate()
         {
-            if (!voiture_devant_exist)
-                vitesse++->vitesse_max
+            Vehicule vDevant = GetVehiculeDevant(this, getList);
+            double dDistanceBetween;
+            float fDistanceFreinage;
+
+            if (!vDevant)
+            {
+                if (this.vitesse < this.vitesseMax)
+                    this.vitesse += 1;
+            }
             else //(voiture_devant_exist)
             {
-                if (feu_vert)
+                //if (feu_vert)
                 {
-                    calcul_distance_entre_les_deux_voitures
-                    calcul_distance_freinage_voiture_derriere
+                    dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
+                    fDistanceFreinage = calcul_distance_freinage(this);
 
                     //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
-                    if (distance_entre_les_deux_voitures + ((voiture_2.longueur) / 3) >= distance_freinage_voiture_derriere)
+                    if (dDistanceBetween + ((vDevant.longueur) / 3) >= fDistanceFreinage)
                     {
-                        if (vitesse_voiture_derriere <= vitesse_max)
-                            vitesse_voiture_derriere++
+                        if (this.vitesse < this.vitesseMax)
+                            this.vitesse += 1;
                     }
                     else  //  On doit freiner car la distance de freinage est insuffisante
                     {
-                        if (vitesse_voiture_derriere >= vitesse_min)
-                        vitesse_voiture_derriere--
+                        if (this.vitesse >= 0)
+                            this.vitesse -= 1;
                     }
+                    //}
+                    //else    //  feu rouge
+                    //{
+                    //  if (this.vitesse >= 0)
+                    //      this.vitesse -= 1;
+                    //}
                 }
-                else    //  feu rouge
-                    vitesse_voiture_derriere--
-            } 
-#endif
-        public uint getAngle()
-        {
-            return this.angle;
+            }
         }
-    }
-   
-
-}
+#endif

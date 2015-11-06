@@ -36,7 +36,7 @@ namespace IAMultiAgent
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 15);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
             dispatcherTimer.Start(); 
         }
         void dispatcherTimer_Tick(object _sender, EventArgs _e)

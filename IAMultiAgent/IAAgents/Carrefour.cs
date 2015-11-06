@@ -25,7 +25,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 1;
+            nbVehicule = 3;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -102,6 +102,10 @@ namespace IAAgents
                     feu.ToggleFeu();
                 }
             }
+        }
+        public List<Vehicule> GetListVehicule()
+        {
+            return lstVehicule;
         }
 
     }
