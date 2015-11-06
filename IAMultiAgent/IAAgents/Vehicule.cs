@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
-    
+
 
     public abstract class Vehicule
     {
         protected uint longueur;
-       protected uint largeur;
+        protected uint largeur;
         protected double vitesseMax;
         Direction direction;
         protected const uint STEP = 3;
@@ -21,7 +21,7 @@ namespace IAAgents
         protected List<Route> itineraire { get; set; }
         protected int indexRouteActuel { get; set; }
 
-        public List<Route>GetItineraire()
+        public List<Route> GetItineraire()
         {
             return this.itineraire;
         }
@@ -29,19 +29,19 @@ namespace IAAgents
         {
             return this.itineraire.ElementAt(this.indexRouteActuel);
         }
-        
 
 
-        
+
+
         static Random seedCouleurRandom;
 
         Position position;
-        Vehicule vehiculeDevant; 
+        Vehicule vehiculeDevant;
         bool estArreter;
         public string couleur { private set; get; }
 
 
-        public Vehicule( Direction dir,List<Route> itineraire)
+        public Vehicule(Direction dir, List<Route> itineraire)
         {
             this.itineraire = itineraire;
             this.longueur = 24;
@@ -54,7 +54,7 @@ namespace IAAgents
             seedCouleurRandom = new Random();
             this.couleur = this.SetCouleur();
             this.angle = 90;
-           
+
         }
         public void GetPositionInit()
         {
@@ -62,28 +62,28 @@ namespace IAAgents
             Direction direction = routeInitial.GetDirection();
             double X = 0;
             double Y = 0;
-            switch(direction)
+            switch (direction)
             {
                 case Direction.EN_FACE:
-                     X = (routeInitial.GetPosition().GetX() + routeInitial.GetLargeur()/2)-this.GetLargeur()/2;
-                     Y = routeInitial.GetPosition().GetY()-this.longueur;
+                    X = (routeInitial.GetPosition().GetX() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
+                    Y = routeInitial.GetPosition().GetY() - this.longueur;
                     break;
                 case Direction.DROITE:
-                     X = routeInitial.GetPosition().GetX()-this.largeur;
-                     Y = (routeInitial.GetPosition().GetY()+routeInitial.GetLargeur()/2)-this.GetLargeur() / 2;
+                    X = routeInitial.GetPosition().GetX() - this.largeur;
+                    Y = (routeInitial.GetPosition().GetY() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
                     break;
-                        case Direction.GAUCHE:
+                case Direction.GAUCHE:
                     X = routeInitial.GetPosition().GetX() + this.largeur;
                     Y = (routeInitial.GetPosition().GetY() + routeInitial.GetLargeur() / 2) - this.largeur / 2;
                     break;
             }
-            this.position =  new Position(X, Y);
+            this.position = new Position(X, Y);
         }
-        private string  SetCouleur()
+        private string SetCouleur()
         {
             string couleur;
             int nbAleatoire = seedCouleurRandom.Next(0, 3);
-            switch(nbAleatoire)
+            switch (nbAleatoire)
             {
                 case 0:
                     couleur = "#FF0000";
@@ -92,7 +92,7 @@ namespace IAAgents
                     couleur = "#0000CC";
                     break;
                 case 2:
-                     couleur = "#000000";
+                    couleur = "#000000";
                     break;
                 case 3:
                     couleur = "#C0C0C0";
@@ -128,43 +128,39 @@ namespace IAAgents
             return this.angle;
         }
 
-        public void Update(List<Vehicule>lstVehicule)
+        public void Update(List<Vehicule> lstVehicule)
         {
-            foreach (Vehicule vehicule in lstVehicule)
-            {
-                if(vitesse<vitesseMax)
-                {
-                  double vitesse =this.vitesse*1.2;
-                    this.vitesse = this.vitesseMax < this.vitesse ? vitesseMax : vitesse;
-                }
-                
-            }
-            UpdatePosition();
+
+            UpdatePosition(lstVehicule);
 
         }
         //Méthode permettant de déterminer le vehicule devant
-        private Vehicule GetVehiculeDevant(Vehicule vehicule,List<Vehicule>lstVehicule)
+        private Vehicule GetVehiculeDevant(Vehicule vehicule, List<Vehicule> lstVehicule)
         {
             Vehicule vehiculeDevant = null;
-            if (this.direction==Direction.EN_FACE)
+            if (this.direction == Direction.EN_FACE)
             {
-                vehiculeDevant = lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE&&v!=vehicule).OrderBy(v=>vehicule.GetPosition().GetY()-v.GetPosition().GetY()).First();
+                vehiculeDevant = lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE && v != vehicule).OrderBy(v => vehicule.GetPosition().GetY() - v.GetPosition().GetY()).First();
             }
             return vehiculeDevant;
         }
 
-       
 
-        private void UpdatePosition()
+        //Changer nom update positionetvitesse
+        private void UpdatePosition(List<Vehicule> listVehicule)
         {
-            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            //if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            // {
+            foreach (Vehicule vehicule in listVehicule)
             {
-                slow_down_or_accelerate();
-
-                //double posX = this.GetPosition().GetX();
-                //double posY = this.position.GetY() + STEP * vitesse;
-                //this.position = new Position(posX, posY);
+                slow_down_or_accelerate(listVehicule);
             }
+
+            //Condition selon la direction actuel
+            //double posX = this.GetPosition().GetX();
+            //double posY = this.position.GetY() + STEP * vitesse;
+            //this.position = new Position(posX, posY);
+            //}
         }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
@@ -174,7 +170,7 @@ namespace IAAgents
             double xyAction = 0.0f;
             Position pVoitureAction;
             Position pVoitureToAvoid;
-            
+
             //  Récupération de la position actuelle de la voiture de devant et de derrière
             pVoitureAction = GetPosition();
             pVoitureToAvoid = vToAvoid.GetPosition();
@@ -198,7 +194,7 @@ namespace IAAgents
         public float calcul_distance_freinage(Vehicule vToBrake)
         {
             float dDistFreinage = 0.0f;
-            float fActualSpeedVehiculeToBreak =(float) vToBrake.GetVitesse();
+            float fActualSpeedVehiculeToBreak = (float)vToBrake.GetVitesse();
             //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
             //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
             fActualSpeedVehiculeToBreak /= 10;
@@ -210,16 +206,16 @@ namespace IAAgents
             float fDistFreinage = calcul_distance_freinage(vCarAction);
 
             //  Calcul du coefficient directeur pour la courbe (abscisse : distance; ordonnée : vitesse)
-            float iCoefDir = (float) vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
+            float iCoefDir = (float)vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
         }
 #if true
-        private void slow_down_or_accelerate()
+        private void slow_down_or_accelerate(List<Vehicule> listVehicule)
         {
-            Vehicule vDevant = GetVehiculeDevant(this, getList);
+            Vehicule vDevant = GetVehiculeDevant(this, listVehicule);
             double dDistanceBetween;
             float fDistanceFreinage;
 
-            if (!vDevant)
+            if (vDevant == null)
             {
                 if (this.vitesse < this.vitesseMax)
                     this.vitesse += 1;
@@ -230,17 +226,25 @@ namespace IAAgents
                 {
                     dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
                     fDistanceFreinage = calcul_distance_freinage(this);
+                    if (dDistanceBetween >= this.longueur / 2)
+                    {
 
-                    //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
-                    if (dDistanceBetween + ((vDevant.longueur) / 3) >= fDistanceFreinage)
-                    {
-                        if (this.vitesse < this.vitesseMax)
-                            this.vitesse += 1;
+                        //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
+                        if (dDistanceBetween + ((vDevant.longueur) / 3) >= fDistanceFreinage)
+                        {
+                            if (this.vitesse < this.vitesseMax)
+                                this.vitesse += 1;
+                        }
+                        else  //  On doit freiner car la distance de freinage est insuffisante
+                        {
+                            if (this.vitesse >= 0)
+                                this.vitesse -= 1;
+                        }
                     }
-                    else  //  On doit freiner car la distance de freinage est insuffisante
+                    else
                     {
-                        if (this.vitesse >= 0)
-                            this.vitesse -= 1;
+                        //Freinage d'urgence 
+                        this.vitesse = 0;
                     }
                     //}
                     //else    //  feu rouge
@@ -251,4 +255,6 @@ namespace IAAgents
                 }
             }
         }
+    }
+}
 #endif
