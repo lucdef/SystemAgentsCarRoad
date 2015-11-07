@@ -2,7 +2,7 @@
 
 namespace IAAgents
 {
-    internal class Voiture : Vehicule
+    public class Voiture : Vehicule
     {
         public Voiture(Direction dir, List<Route> lstRoute,uint longeur,uint largeur,float vitesseMax) : base(dir, lstRoute)
         {

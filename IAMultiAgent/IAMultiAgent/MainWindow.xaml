@@ -13,5 +13,11 @@
         <Label x:Name="lbEtatFeuDevannt" Content=" " HorizontalAlignment="Left" Margin="735,214,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbFeuGauche" Content="Feu à  gauche : " HorizontalAlignment="Left" Margin="653,230,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbEtatFeuGauche" Content="" HorizontalAlignment="Left" Margin="735,230,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNbVoituretxt" Content="Nombre de voiture : " HorizontalAlignment="Left" Margin="653,250,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNombreDeVoitureInt" Content="" HorizontalAlignment="Left" Margin="770,250,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNbCamio4txt" Content="Nombre de camion : " HorizontalAlignment="Left" Margin="653,270,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNombreDeCamionInt" Content="" HorizontalAlignment="Left" Margin="770,270,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNbTotalVehiculetxt" Content="Nombre total de vehicule : " HorizontalAlignment="Left" Margin="653,290,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbNombrTotaleDeVehiculeInt" Content="" HorizontalAlignment="Left" Margin="800,290,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

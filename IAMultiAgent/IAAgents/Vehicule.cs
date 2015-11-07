@@ -179,15 +179,43 @@ namespace IAAgents
                 
                 if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
                 {
-                  double posX = this.GetPosition().GetX();
-                    double posY = this.position.GetY() - STEP * vitesse;
-                    this.position = new Position(posX, posY);
+                    if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetY())
+                    {
+                        this.angle = this.angle - 45;
+                        double posX = this.GetPosition().GetX()+3;
+                        double posY = this.position.GetY() - STEP * vitesse;
+                        this.position = new Position(posX, posY);
+                        if (this.angle == 0)
+                        {
+                            this.indexRouteActuel = 1;
+                        }
+                    }
+                    else
+                    {
+                        double posX = this.GetPosition().GetX();
+                        double posY = this.position.GetY() - STEP * vitesse;
+                        this.position = new Position(posX, posY);
+                    }
                 }
                 else if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
                 {
+                    if (this.itineraire.ElementAt(1).GetDirection() == Direction.GAUCHE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetX() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetX())
+                    {
+                        this.angle = this.angle + 45;
                     double posX = this.GetPosition().GetX() + STEP * vitesse;
-                    double posY = this.position.GetY() ;
+                    double posY = this.position.GetY()+3;
                     this.position = new Position(posX, posY);
+                        if (this.angle == 90)
+                        {
+                            this.indexRouteActuel = 1;
+                        }
+                    }
+                    else
+                    {
+                        double posX = this.GetPosition().GetX() + STEP * vitesse;
+                        double posY = this.position.GetY();
+                        this.position = new Position(posX, posY);
+                    }
                 }
                 //if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
                 //{
