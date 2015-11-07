@@ -8,7 +8,6 @@
         <Label x:Name="lbNbVoiture" Content="Nombre de vehicule : " HorizontalAlignment="Left" Margin="653,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174" TouchEnter="tbNbVehicule_TouchEnter" KeyDown="tbNbVehicule_KeyDown"/>
 
-        <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,41,0,0" TextWrapping="Wrap" Text="Nombre vehicule" VerticalAlignment="Top" Width="174" TouchEnter="tbNbVehicule_TouchEnter" KeyDown="tbNbVehicule_KeyDown"/>
         <Label x:Name="lbInfo" Content="Information sur la simulation" HorizontalAlignment="Left" Margin="653,183,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label" Content="Feu en face : " HorizontalAlignment="Left" Margin="653,214,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbEtatFeuDevannt" Content=" " HorizontalAlignment="Left" Margin="735,214,0,0" VerticalAlignment="Top"/>
