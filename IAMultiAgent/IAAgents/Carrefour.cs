@@ -22,6 +22,16 @@ namespace IAAgents
         List<Vehicule> lstVehicule;
         List<Feu> lstFeux;
         List<Route> lstRoute;
+        TimeSpan simulationSpeed;
+
+        public TimeSpan GetSimulationSpeed()
+        {
+            return this.simulationSpeed;
+        }
+        public void SetSimulationSpeed(TimeSpan timeSpeed)
+        {
+            this.simulationSpeed = timeSpeed;
+        }
 
         public Carrefour()
         {
@@ -144,7 +154,7 @@ namespace IAAgents
             foreach(Route route in lstRoute)
             {
                 Feu feu = route.GetFeu();
-                feu.tempsActivite = feu.tempsActivite.Add(new TimeSpan(0, 0, 0, 0,15));
+                feu.tempsActivite = feu.tempsActivite.Add(this.simulationSpeed);
                 if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))
                     {
                     feu.ToggleFeu();

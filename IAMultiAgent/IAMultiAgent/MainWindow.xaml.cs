@@ -38,10 +38,11 @@ namespace IAMultiAgent
        // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
       //  carrefourCanvas.Background = imageBrush;
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 1);
+            carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+            dispatcherTimer.Interval = carrefour.GetSimulationSpeed();
             dispatcherTimer.Start(); 
         }
         void dispatcherTimer_Tick(object _sender, EventArgs _e)
