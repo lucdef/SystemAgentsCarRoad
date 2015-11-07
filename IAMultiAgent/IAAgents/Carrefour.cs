@@ -67,6 +67,12 @@ namespace IAAgents
             this.lstRoute.Add(route);
             this.lstRoute.Add(routePrincipal2);
         }
+
+        public void SetNbVehicule(int nbVehicule)
+        {
+            this.nbVehicule =(uint) nbVehicule;
+        }
+
         private Direction GetRandomDirection()
         {
             Direction direction;
@@ -130,7 +136,7 @@ namespace IAAgents
             }
             if(nbVehicule>lstVehicule.Count)
             {
-                GenererVehicule(lstVehicule.Count);
+                GenererVehicule(((int)nbVehicule)-lstVehicule.Count);
             }
         }
 
@@ -153,6 +159,7 @@ namespace IAAgents
             for(int i=0;i<nbVehicule;i++)
             {
                 Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(),GenererItineraire());
+                vehicule.GetPositionInit();
                 this.lstVehicule.Add(vehicule);
             }
         }

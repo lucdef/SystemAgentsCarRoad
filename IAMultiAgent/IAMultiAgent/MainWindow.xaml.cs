@@ -74,5 +74,18 @@ namespace IAMultiAgent
             carrefourCanvas.Children.Add(voiture);
 
         }
+
+        private void tbNbVehicule_TouchEnter(object sender, TouchEventArgs e)
+        {
+            carrefour.SetNbVehicule(int.Parse(tbNbVehicule.Text));
+        }
+
+        private void tbNbVehicule_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key ==Key.Enter)
+            {
+                carrefour.SetNbVehicule(int.Parse(tbNbVehicule.Text));
+            }
+        }
     }
 }
