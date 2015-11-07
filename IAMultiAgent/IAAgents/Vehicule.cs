@@ -140,7 +140,7 @@ namespace IAAgents
             UpdatePosition(lstVehicule);
 
         }
-        //Méthode permettant de déterminer le vehicule devant
+        //Méthode permettant de déterminer le vehicule devant 
         private Vehicule GetVehiculeDevant(Vehicule vehicule, List<Vehicule> lstVehicule)
         {
             Vehicule vehiculeDevant = null;

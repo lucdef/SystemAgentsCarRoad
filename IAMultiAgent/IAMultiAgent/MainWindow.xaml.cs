@@ -34,8 +34,9 @@ namespace IAMultiAgent
             carrefour = new Carrefour();
 
         ImageBrush imageBrush = new ImageBrush();
-        imageBrush.ImageSource = new BitmapImage(new Uri(@"/image/carrefour.png", UriKind.Relative));
-        carrefourCanvas.Background = imageBrush;
+            //Mettre le bon chemi
+       // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
+      //  carrefourCanvas.Background = imageBrush;
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
 
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
