@@ -40,10 +40,15 @@ namespace IAAgents
         }
         private void GenerateRoute()
         {
-            Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
-            Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
-            Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);
-            Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
+            //  Route au sud
+            Route route = new Route(300,20,new Position(Width/2 + 20/2, Height + 20/2),Direction.EN_FACE);
+            //  Route au nord
+            Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 20 / 2, 0), Direction.EN_FACE);
+            //  Route a l'ouest
+            Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2 - 20 / 2), Direction.DROITE);
+            //  Route a l'est
+            Route routeSecondaire2 = new Route(300, 20, new Position(Width / 2 + 20 / 2, Height / 2 + 20 / 2), Direction.DROITE);
+
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
             KeyValuePair<Direction, Route> routePrincipalLie2 = new KeyValuePair<Direction, Route>(Direction.DROITE, routeSecondaire2);
             List<KeyValuePair<Direction,Route>> lstRoutePrincipalLie = new List<KeyValuePair<Direction, Route>>();

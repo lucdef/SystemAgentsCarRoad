@@ -67,7 +67,8 @@ namespace IAMultiAgent
            
             Color couleur = (Color)ColorConverter.ConvertFromString(vehicule.couleur);
             voiture.Fill =  new SolidColorBrush(couleur);
-            voiture.RadiusX = 90;
+            double dAngle = vehicule.getAngle();
+            voiture.RadiusY = dAngle;
             voiture.Stroke  = Brushes.Black;
 
             voiture.Margin = new Thickness(vehicule.GetPosition().GetX(),vehicule.GetPosition().GetY(),0,0);
