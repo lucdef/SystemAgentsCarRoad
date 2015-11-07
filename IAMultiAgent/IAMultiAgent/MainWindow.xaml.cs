@@ -86,18 +86,20 @@ namespace IAMultiAgent
 
                 Color couleur = (Color)ColorConverter.ConvertFromString("#ffffff");
                 route.Fill = new SolidColorBrush(couleur);
-                if(road.GetDirection()==Direction.EN_FACE)
+
+                
+                if (road.GetDirection()==Direction.EN_FACE)
                 {
                     route.RadiusX = 90;
                 }
                 else
                 {
-                    route.RadiusX = 0;
+                    rotateRectangle(route, route.Width, route.Height, 90);
                 }
-                
+
                 route.Stroke = Brushes.Black;
 
-                route.Margin = new Thickness(road.GetPosition().GetX(), road.GetPosition().GetY(), 0, 0);
+                route.Margin = new Thickness(road.GetPosition().GetX(), Height/2, 0, 0);
                 carrefourCanvas.Children.Add(route);
             }
         }
@@ -112,6 +114,16 @@ namespace IAMultiAgent
             {
                 carrefour.SetNbVehicule(int.Parse(tbNbVehicule.Text));
             }
+        }
+        private void rotateRectangle(Rectangle RectToTransform, double middle_X, double middle_Y, double angle)
+        {
+            RotateTransform rt = new RotateTransform
+            {
+                CenterX = middle_X,
+                CenterY = middle_Y,
+                Angle = angle
+            };
+            RectToTransform.LayoutTransform = rt;
         }
     }
 }
