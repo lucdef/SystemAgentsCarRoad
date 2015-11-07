@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CarreFour" Height="476.8" Width="885.6">
     <Grid>
-        <Canvas Name="carrefourCanvas"  Background="Black" HorizontalAlignment="Left" Height="480" Margin="0,0,0,0" VerticalAlignment="Top" Width="640">
+        <Canvas Name="carrefourCanvas"  Background="Coral" HorizontalAlignment="Left" Height="480" Margin="0,0,0,0" VerticalAlignment="Top" Width="640">
             
             
         </Canvas>

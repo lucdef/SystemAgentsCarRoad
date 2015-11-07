@@ -71,7 +71,8 @@ namespace IAAgents
         private Direction GetRandomDirection()
         {
             Direction direction;
-            uint nbAleatoire = (uint) seedAleatoire.Next(0, 1);
+            int nbAleatoire = seedAleatoire.Next(0, 100);
+            nbAleatoire = nbAleatoire > 50 ? 1 : 0;
             switch(nbAleatoire)
             {
                 case 0:
@@ -167,7 +168,8 @@ namespace IAAgents
         private List<Route> GenererItineraire()
         {
             List<Route> itineraire = new List<Route>();
-            Route route = this.lstRoute.Find(r => r.GetDirection() == GetRandomDirection());
+            Direction randomDirection = GetRandomDirection();
+            Route route = this.lstRoute.Find(r => r.GetDirection() == randomDirection);
             itineraire.Add(route);
             Route route2 = route.getRouteLie().ElementAt(seedAleatoire.Next(0, route.getRouteLie().Count()-1)).Value;
             itineraire.Add(route2);
