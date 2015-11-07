@@ -32,19 +32,16 @@ namespace IAAgents
             GenerateRoute();
             seedAleatoire = new Random();
           
-            for(int f=0;f<4;f++)
-            {
-                //Génération des feux attention changer la position 
-                lstFeux.Add(new Feu(false,new TimeSpan(0,0,15),new TimeSpan(0,0,15),new Position(50,50)));
-            }
         }
         private void GenerateRoute()
         {
             Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
-            Feu feu =  new Feu(false, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15), new Position(50, 50);
-            route.setFeu(feu);
+            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
+            route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
             Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);
+            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
+            routePrincipal2.SetFeu(feuPrincipal2);
             Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
             KeyValuePair<Direction, Route> routePrincipalLie2 = new KeyValuePair<Direction, Route>(Direction.DROITE, routeSecondaire2);
@@ -93,6 +90,7 @@ namespace IAAgents
        
         public void UpdateCarrefour()
         {
+            UpdateFeux();
             UpdateVoiture();
             UpdateFeux();
             if (carrefourUpdatedEvent != null)
@@ -143,9 +141,10 @@ namespace IAAgents
         
         private void UpdateFeux()
         {
-            foreach(Feu feu in lstFeux)
+            foreach(Route route in lstRoute)
             {
-                feu.tempsActivite.Add(new TimeSpan(0, 0, 0, 0, 15));
+                Feu feu = route.GetFeu();
+                feu.tempsActivite = feu.tempsActivite.Add(new TimeSpan(0, 0, 0, 0,15));
                 if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))
                     {
                     feu.ToggleFeu();

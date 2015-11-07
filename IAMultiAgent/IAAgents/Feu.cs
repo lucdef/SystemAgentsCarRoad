@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
-    class Feu
+    public class Feu
     {
         
         public bool isVert { get; set; }
        public  TimeSpan tempsRouge { get; set; }
         public TimeSpan tempsVert { get; set; }
         public TimeSpan tempsActivite { get; set; }
-        public Position position { get; set; }
+        
 
-        public Feu(bool isVert, TimeSpan tRouge, TimeSpan tVert,Position position)
+        public Feu(bool isVert, TimeSpan tRouge, TimeSpan tVert)
         {
             this.isVert = isVert;
             this.tempsRouge = tRouge;
             this.tempsVert = tVert;
-            this.position = position;
+            
         }
         public void ToggleFeu()
         {

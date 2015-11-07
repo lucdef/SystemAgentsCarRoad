@@ -22,6 +22,10 @@ namespace IAAgents
             this.position = position;
             this.direction = direction;
         }
+        public void SetFeu(Feu feu)
+        {
+            this.feu = feu;
+        }
         public double GetLargeur()
         {
             return this.largeur;
@@ -47,6 +51,11 @@ namespace IAAgents
         internal List<KeyValuePair<Direction,Route>> getRouteLie()
         {
             return this.routeLie;
+        }
+
+        internal Feu GetFeu()
+        {
+            return this.feu;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace IAAgents
         Direction direction;
         protected const uint STEP = 3;
         protected double vitesse;
-        protected uint angle;
+        protected double angle;
         protected List<Route> itineraire { get; set; }
         protected int indexRouteActuel { get; set; }
 
@@ -65,10 +65,12 @@ namespace IAAgents
             switch (direction)
             {
                 case Direction.EN_FACE:
+                    setAngle(0);
                     X = (routeInitial.GetPosition().GetX() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
                     Y = routeInitial.GetPosition().GetY() - this.longueur;
                     break;
                 case Direction.DROITE:
+                    setAngle(90);
                     X = routeInitial.GetPosition().GetX() - this.largeur;
                     Y = (routeInitial.GetPosition().GetY() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
                     break;
@@ -129,9 +131,13 @@ namespace IAAgents
         {
             return this.vehiculeDevant;
         }
-        public uint getAngle()
+        public double getAngle()
         {
             return this.angle;
+        }
+        public void setAngle(double Angle)
+        {
+            this.angle = Angle;
         }
 
         public void Update(List<Vehicule> lstVehicule)
@@ -169,19 +175,19 @@ namespace IAAgents
                 if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
                 {
                   double posX = this.GetPosition().GetX();
-                    double posY = this.position.GetY() + STEP * vitesse;
+                    double posY = this.position.GetY() - STEP * vitesse;
                     this.position = new Position(posX, posY);
                 }
-                if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
+                else if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
                 {
                     double posX = this.GetPosition().GetX() + STEP * vitesse;
                     double posY = this.position.GetY() ;
                     this.position = new Position(posX, posY);
                 }
-                if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
-                {
+                //if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
+                //{
 
-                }
+                //}
                 // }
 
                 //Condition selon la direction actuel
