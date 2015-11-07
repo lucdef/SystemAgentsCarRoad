@@ -185,6 +185,10 @@ namespace IAAgents
         {
             return lstVehicule;
         }
+        public List<Route> GetListRoute()
+        {
+            return this.lstRoute;
+        }
 
     }
 }

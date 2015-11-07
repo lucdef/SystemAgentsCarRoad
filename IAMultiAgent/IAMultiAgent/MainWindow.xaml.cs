@@ -57,6 +57,7 @@ namespace IAMultiAgent
             {
                 DrawVehicule(vehicule);
             }
+            DrawRoute();
             carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
@@ -74,7 +75,31 @@ namespace IAMultiAgent
             carrefourCanvas.Children.Add(voiture);
 
         }
+        private void DrawRoute()
+        {
+            foreach (Route road in carrefour.GetListRoute())
+            {
+                Rectangle route = new Rectangle();
+                route.Width = road.GetLargeur();
+                route.Height = road.GetLongueur();
 
+                Color couleur = (Color)ColorConverter.ConvertFromString("#ffffff");
+                route.Fill = new SolidColorBrush(couleur);
+                if(road.GetDirection()==Direction.EN_FACE)
+                {
+                    route.RadiusX = 90;
+                }
+                else
+                {
+                    route.RadiusX = 0;
+                }
+                
+                route.Stroke = Brushes.Black;
+
+                route.Margin = new Thickness(road.GetPosition().GetX(), road.GetPosition().GetY(), 0, 0);
+                carrefourCanvas.Children.Add(route);
+            }
+        }
         private void tbNbVehicule_TouchEnter(object sender, TouchEventArgs e)
         {
             carrefour.SetNbVehicule(int.Parse(tbNbVehicule.Text));
