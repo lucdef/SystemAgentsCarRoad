@@ -38,6 +38,7 @@ namespace IAAgents
         {
             return this.direction;
         }
+        
         public void setRoute(List<KeyValuePair<Direction,Route>>routes)
         {
             this.routeLie = routes;
