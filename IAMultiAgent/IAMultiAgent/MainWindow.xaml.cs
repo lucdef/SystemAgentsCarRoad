@@ -38,27 +38,26 @@ namespace IAMultiAgent
        // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
       //  carrefourCanvas.Background = imageBrush;
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 1);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 100);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = carrefour.GetSimulationSpeed();
-            dispatcherTimer.Start(); 
+			dispatcherTimer.Interval = carrefour.GetSimulationSpeed();            dispatcherTimer.Start(); 
         }
         void dispatcherTimer_Tick(object _sender, EventArgs _e)
         {
             carrefour.UpdateCarrefour();
         }
-
        
         private void Carrefour_carrefourUpdated(List<Vehicule> lstVehicule)
         {
             carrefourCanvas.Children.Clear();
+            DrawRoute();
             foreach (Vehicule vehicule in lstVehicule)
             {
                 DrawVehicule(vehicule);
             }
-            DrawRoute();
+            
             carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
@@ -92,14 +91,13 @@ namespace IAMultiAgent
                 route.Fill = new SolidColorBrush(couleur);
 
                 
-                if (road.GetDirection()==Direction.EN_FACE)
-                {
-                    route.RadiusX = 90;
-                }
-                else
+                if (road.GetDirection()==Direction.DROITE)
                 {
                     rotateRectangle(route, route.Width, route.Height, 90);
                 }
+
+                route.RadiusX = 10;
+                route.RadiusY = 10;
 
                 route.Stroke = Brushes.Black;
 
