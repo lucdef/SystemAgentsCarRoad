@@ -69,13 +69,16 @@ namespace IAMultiAgent
             Color couleur = (Color)ColorConverter.ConvertFromString(vehicule.couleur);
             voiture.Fill =  new SolidColorBrush(couleur);
             double dAngle = vehicule.getAngle();
-            voiture.RadiusY = dAngle;
             voiture.Stroke  = Brushes.Black;
+
+
+            rotateRectangle(voiture, voiture.Width, voiture.Height,vehicule.getAngle());
 
             voiture.Margin = new Thickness(vehicule.GetPosition().GetX(),vehicule.GetPosition().GetY(),0,0);
             carrefourCanvas.Children.Add(voiture);
 
         }
+        
         private void DrawRoute()
         {
             foreach (Route road in carrefour.GetListRoute())
@@ -125,5 +128,6 @@ namespace IAMultiAgent
             };
             RectToTransform.LayoutTransform = rt;
         }
+
     }
 }

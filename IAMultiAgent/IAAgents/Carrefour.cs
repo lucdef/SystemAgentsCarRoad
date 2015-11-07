@@ -96,6 +96,7 @@ namespace IAAgents
        
         public void UpdateCarrefour()
         {
+            UpdateFeux();
             UpdateVoiture();
             if (carrefourUpdatedEvent != null)
             {

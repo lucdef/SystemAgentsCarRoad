@@ -65,12 +65,12 @@ namespace IAAgents
             switch (direction)
             {
                 case Direction.EN_FACE:
-                    setAngle(90);
+                    setAngle(0);
                     X = (routeInitial.GetPosition().GetX() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
                     Y = routeInitial.GetPosition().GetY() - this.longueur;
                     break;
                 case Direction.DROITE:
-                    setAngle(0);
+                    setAngle(90);
                     X = routeInitial.GetPosition().GetX() - this.largeur;
                     Y = (routeInitial.GetPosition().GetY() + routeInitial.GetLargeur() / 2) - this.GetLargeur() / 2;
                     break;
