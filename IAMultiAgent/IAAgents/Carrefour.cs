@@ -25,18 +25,13 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 3;
+            nbVehicule = 10;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
             GenerateRoute();
             seedAleatoire = new Random();
-            for(int i=0;i<nbVehicule;i++)
-            {
-                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
-                vehicule.GetPositionInit();
-                lstVehicule.Add(vehicule);
-            }
+          
             for(int f=0;f<4;f++)
             {
                 //Génération des feux attention changer la position 
@@ -160,7 +155,12 @@ namespace IAAgents
             {
                 Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(),GenererItineraire());
                 vehicule.GetPositionInit();
-                this.lstVehicule.Add(vehicule);
+                if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && v.GetPosition().GetX() == vehicule.GetPosition().GetX() && v.GetPosition().GetY() == vehicule.GetPosition().GetY()))
+                {
+
+
+                    this.lstVehicule.Add(vehicule);
+                }
             }
         }
         //Méthode permettant de générer un itinéraire aléatoire pour une voiture

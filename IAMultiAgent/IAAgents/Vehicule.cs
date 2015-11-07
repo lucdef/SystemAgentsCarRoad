@@ -46,7 +46,7 @@ namespace IAAgents
             this.itineraire = itineraire;
             this.longueur = 24;
             this.largeur = 12;
-            this.vitesse = 5;
+            this.vitesse = 25;
             this.vitesseMax = 50;
             this.direction = dir;
             this.vehiculeDevant = null;
@@ -146,7 +146,11 @@ namespace IAAgents
             Vehicule vehiculeDevant = null;
             if (this.direction == Direction.EN_FACE)
             {
-                vehiculeDevant = lstVehicule.FindAll(v => vehicule.direction == Direction.EN_FACE && v != vehicule).OrderBy(v => vehicule.GetPosition().GetY() - v.GetPosition().GetY()).First();
+                List<Vehicule>lstVehiculeOnTheRoad = lstVehicule.FindAll(v =>v.GetRouteActuel()==vehicule.GetRouteActuel()&& vehicule.direction == Direction.EN_FACE && v != vehicule).OrderBy(v => vehicule.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                if(lstVehiculeOnTheRoad.Count>0)
+                {
+                    vehiculeDevant = lstVehiculeOnTheRoad.First();
+                }
             }
             return vehiculeDevant;
         }
@@ -157,17 +161,35 @@ namespace IAAgents
         {
             //if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             // {
-            foreach (Vehicule vehicule in listVehicule)
-            {
+            ////foreach (Vehicule vehicule in listVehicule)
+           // {
                 slow_down_or_accelerate(listVehicule);
-            }
+                //If englobant tout pour tourner c le cas ou on est sur la premiere route
+                
+                if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+                {
+                  double posX = this.GetPosition().GetX();
+                    double posY = this.position.GetY() + STEP * vitesse;
+                    this.position = new Position(posX, posY);
+                }
+                if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
+                {
+                    double posX = this.GetPosition().GetX() + STEP * vitesse;
+                    double posY = this.position.GetY() ;
+                    this.position = new Position(posX, posY);
+                }
+                if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
+                {
 
-            //Condition selon la direction actuel
-            //double posX = this.GetPosition().GetX();
-            //double posY = this.position.GetY() + STEP * vitesse;
-            //this.position = new Position(posX, posY);
-            //}
-        }
+                }
+                // }
+
+                //Condition selon la direction actuel
+                //double posX = this.GetPosition().GetX();
+                //double posY = this.position.GetY() + STEP * vitesse;
+                //this.position = new Position(posX, posY);
+                //}
+            }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
         {
