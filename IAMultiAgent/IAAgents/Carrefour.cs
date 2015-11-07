@@ -15,6 +15,7 @@ namespace IAAgents
 
         const uint Height = 480;
         const uint Width = 640;
+        const uint DISTANCE_ENTRE_VEHICULES=20;
         const string Couleur = "#ffffff";
         static Random seedAleatoire;
         uint nbVehicule;
@@ -35,7 +36,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 10;
+            nbVehicule = 2;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -81,6 +82,7 @@ namespace IAAgents
         {
             Direction direction;
             int nbAleatoire = seedAleatoire.Next(0, 100);
+            /*
             nbAleatoire = nbAleatoire > 50 ? 1 : 0;
             switch(nbAleatoire)
             {
@@ -95,6 +97,8 @@ namespace IAAgents
                     break;
 
             }
+            */
+            direction = Direction.DROITE;
             return direction;
         }
        
@@ -155,11 +159,9 @@ namespace IAAgents
             {
                 
                 Feu feu = route.GetFeu();
-                Console.WriteLine(feu.isVert + " " + feu.tempsActivite.ToString());
                 feu.tempsActivite = feu.tempsActivite.Add(this.simulationSpeed);
                 if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))
                     {
-                    Console.WriteLine("Toggle" + feu.isVert + " temps:" + feu.tempsActivite.Seconds.ToString());
                     feu.ToggleFeu();
                 }
             }
@@ -167,15 +169,32 @@ namespace IAAgents
         //Méthode permettant d'ajouter des voitures de manière aléatoire
         private void GenererVehicule(int NbVehiculeToAdd)
         {
-            for(int i=0;i<nbVehicule;i++)
+            for (int i = 0; i < nbVehicule; i++)
             {
-                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(),GenererItineraire());
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
                 vehicule.GetPositionInit();
-                if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && v.GetPosition().GetX() == vehicule.GetPosition().GetX() && v.GetPosition().GetY() == vehicule.GetPosition().GetY()))
+
+                if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                 {
+
+                if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
+                                        && ((v.GetPosition().GetX()) <= vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/1)))
+                   {
 
 
                     this.lstVehicule.Add(vehicule);
+                    }
+                }
+                else if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
+                {
+
+                    if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
+                                            && ((v.GetPosition().GetY()) <= vehicule.GetPosition().GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/1)))
+                    {
+
+
+                        this.lstVehicule.Add(vehicule);
+                    }
                 }
             }
         }

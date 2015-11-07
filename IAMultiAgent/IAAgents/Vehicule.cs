@@ -15,7 +15,7 @@ namespace IAAgents
         protected uint largeur;
         protected double vitesseMax;
         Direction direction;
-        protected const uint STEP = 3;
+        protected const double STEP = 0.005;
         protected double vitesse;
         protected double angle;
         protected List<Route> itineraire { get; set; }
@@ -46,7 +46,7 @@ namespace IAAgents
             this.itineraire = itineraire;
             this.longueur = 24;
             this.largeur = 12;
-            this.vitesse = 25;
+            this.vitesse = 0;
             this.vitesseMax = 50;
             this.direction = dir;
             this.vehiculeDevant = null;
@@ -152,8 +152,16 @@ namespace IAAgents
             Vehicule vehiculeDevant = null;
             if (this.direction == Direction.EN_FACE)
             {
-                List<Vehicule>lstVehiculeOnTheRoad = lstVehicule.FindAll(v =>v.GetRouteActuel()==vehicule.GetRouteActuel()&& vehicule.direction == Direction.EN_FACE && v != vehicule).OrderBy(v => vehicule.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                List<Vehicule>lstVehiculeOnTheRoad = lstVehicule.FindAll(v =>v.GetRouteActuel()==vehicule.GetRouteActuel()&& vehicule.direction == this.direction && v != vehicule).OrderBy(v => vehicule.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
                 if(lstVehiculeOnTheRoad.Count>0)
+                {
+                    vehiculeDevant = lstVehiculeOnTheRoad.First();
+                }
+            }
+            else if (this.direction == Direction.DROITE)
+            {
+                List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && vehicule.direction == this.direction && v != vehicule).OrderBy(v => vehicule.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
+                if (lstVehiculeOnTheRoad.Count > 0)
                 {
                     vehiculeDevant = lstVehiculeOnTheRoad.First();
                 }
@@ -212,15 +220,15 @@ namespace IAAgents
             //  Récupération des positions, soit en X ou soit en Y suivant dans quel direction le véhicule de derrière circule
             if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
             {
-                xyToAvoid = pVoitureToAvoid.GetX();
-                xyAction = pVoitureAction.GetX();
-            }
-            else
-            {
                 xyToAvoid = pVoitureToAvoid.GetY();
                 xyAction = pVoitureAction.GetY();
             }
-            dDeltaDistance = xyToAvoid - xyAction;
+            else
+            {
+                xyToAvoid = pVoitureToAvoid.GetX();
+                xyAction = pVoitureAction.GetX();
+            }
+            dDeltaDistance = Math.Abs(xyToAvoid - xyAction);
 
             return dDeltaDistance;
         }
@@ -229,10 +237,13 @@ namespace IAAgents
         {
             float dDistFreinage = 0.0f;
             float fActualSpeedVehiculeToBreak = (float)vToBrake.GetVitesse();
+            //Console.WriteLine("fActualSpeedVehiculeToBreak");
+            //Console.WriteLine(String.Format("  {0:F20}", fActualSpeedVehiculeToBreak));
             //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
             //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
-            fActualSpeedVehiculeToBreak /= 10;
-            return dDistFreinage * dDistFreinage;
+            dDistFreinage = fActualSpeedVehiculeToBreak / 10;
+            dDistFreinage = dDistFreinage * dDistFreinage;
+            return dDistFreinage;
         }
 
         public void calcul_courbe_vitesse_distance(Vehicule vCarAction)
@@ -240,7 +251,7 @@ namespace IAAgents
             float fDistFreinage = calcul_distance_freinage(vCarAction);
 
             //  Calcul du coefficient directeur pour la courbe (abscisse : distance; ordonnée : vitesse)
-            float iCoefDir = (float)vitesse / (fDistFreinage - ((vDevant().longueur) / 3));
+            float iCoefDir = (float)vitesse / (fDistFreinage - ((vDevant().longueur) / 1));
         }
 #if true
         private void slow_down_or_accelerate(List<Vehicule> listVehicule)
@@ -260,19 +271,34 @@ namespace IAAgents
                 {
                     dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
                     fDistanceFreinage = calcul_distance_freinage(this);
+                    //Console.WriteLine(String.Format("  {0:F20}", dDistanceBetween));
                     if (dDistanceBetween >= this.longueur / 2)
                     {
 
                         //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
-                        if (dDistanceBetween + ((vDevant.longueur) / 3) >= fDistanceFreinage)
+                        if (dDistanceBetween + /*((vDevant.longueur) / 3)*/20 >= fDistanceFreinage)
                         {
                             if (this.vitesse < this.vitesseMax)
+                            {
                                 this.vitesse += 1;
+                                Console.WriteLine("Accelere");
+                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                            }
+                            else
+                            {
+                                Console.WriteLine("maintient Vitesse");
+                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                            }
                         }
                         else  //  On doit freiner car la distance de freinage est insuffisante
                         {
                             if (this.vitesse >= 0)
+                            {
                                 this.vitesse -= 1;
+                                Console.WriteLine("Freine");
+                            }
+                            else
+                                Console.WriteLine("maintient Vitesse");
                         }
                     }
                     else
