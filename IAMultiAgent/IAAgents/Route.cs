@@ -53,7 +53,7 @@ namespace IAAgents
             return this.routeLie;
         }
 
-        internal Feu GetFeu()
+        public Feu GetFeu()
         {
             return this.feu;
         }

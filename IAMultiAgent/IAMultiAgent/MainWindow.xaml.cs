@@ -63,6 +63,9 @@ namespace IAMultiAgent
                 DrawVehicule(vehicule);
             }
             DrawRoute();
+            List<Route> lstRoute = carrefour.GetListRoute();
+            lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert;
+            lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert;
             carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
