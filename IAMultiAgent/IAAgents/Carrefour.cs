@@ -153,10 +153,13 @@ namespace IAAgents
         {
             foreach(Route route in lstRoute)
             {
+                
                 Feu feu = route.GetFeu();
+                Console.WriteLine(feu.isVert + " " + feu.tempsActivite.ToString());
                 feu.tempsActivite = feu.tempsActivite.Add(this.simulationSpeed);
                 if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))
                     {
+                    Console.WriteLine("Toggle" + feu.isVert + " temps:" + feu.tempsActivite.Seconds.ToString());
                     feu.ToggleFeu();
                 }
             }

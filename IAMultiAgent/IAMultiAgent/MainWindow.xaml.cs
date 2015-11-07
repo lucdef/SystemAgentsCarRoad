@@ -23,6 +23,7 @@ namespace IAMultiAgent
     public partial class MainWindow : Window
     {
         public Carrefour carrefour;
+        public TimeSpan tempsactivite;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,13 +33,14 @@ namespace IAMultiAgent
         private void MainWindow_Loaded1(object sender, RoutedEventArgs e)
         {
             carrefour = new Carrefour();
+            tempsactivite= new TimeSpan(0, 0, 0, 0, 0);
 
-        ImageBrush imageBrush = new ImageBrush();
+            ImageBrush imageBrush = new ImageBrush();
             //Mettre le bon chemi
        // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
       //  carrefourCanvas.Background = imageBrush;
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 1);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 15);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -47,6 +49,8 @@ namespace IAMultiAgent
         }
         void dispatcherTimer_Tick(object _sender, EventArgs _e)
         {
+            tempsactivite.Add(carrefour.GetSimulationSpeed());
+            Console.WriteLine("temps actuel" + tempsactivite.ToString());
             carrefour.UpdateCarrefour();
         }
 
