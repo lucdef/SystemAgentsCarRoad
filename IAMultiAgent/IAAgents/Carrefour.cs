@@ -157,6 +157,7 @@ namespace IAAgents
         {
             foreach(Route route in lstRoute)
             {
+                
                 Feu feu = route.GetFeu();
                 feu.tempsActivite = feu.tempsActivite.Add(this.simulationSpeed);
                 if((feu.isVert&&feu.tempsVert==feu.tempsActivite)||(!feu.isVert&&feu.tempsRouge==feu.tempsActivite))

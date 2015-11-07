@@ -237,8 +237,8 @@ namespace IAAgents
         {
             float dDistFreinage = 0.0f;
             float fActualSpeedVehiculeToBreak = (float)vToBrake.GetVitesse();
-            Console.WriteLine("fActualSpeedVehiculeToBreak");
-            Console.WriteLine(String.Format("  {0:F20}", fActualSpeedVehiculeToBreak));
+            //Console.WriteLine("fActualSpeedVehiculeToBreak");
+            //Console.WriteLine(String.Format("  {0:F20}", fActualSpeedVehiculeToBreak));
             //  Pour calculer la distance de freinage, il faut mettre au carré le chiffre des dizaines
             //  donc il faut diviser par 10 pour avoir seulement le chiffre des dizaines.
             dDistFreinage = fActualSpeedVehiculeToBreak / 10;
@@ -271,10 +271,7 @@ namespace IAAgents
                 {
                     dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
                     fDistanceFreinage = calcul_distance_freinage(this);
-                    //Console.WriteLine("dDistanceBetween");
                     //Console.WriteLine(String.Format("  {0:F20}", dDistanceBetween));
-                    //Console.WriteLine("fDistanceFreinage");
-                    //Console.WriteLine(String.Format("  {0:F20}", fDistanceFreinage));
                     if (dDistanceBetween >= this.longueur / 2)
                     {
 
@@ -282,12 +279,26 @@ namespace IAAgents
                         if (dDistanceBetween + /*((vDevant.longueur) / 3)*/20 >= fDistanceFreinage)
                         {
                             if (this.vitesse < this.vitesseMax)
+                            {
                                 this.vitesse += 1;
+                                Console.WriteLine("Accelere");
+                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                            }
+                            else
+                            {
+                                Console.WriteLine("maintient Vitesse");
+                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                            }
                         }
                         else  //  On doit freiner car la distance de freinage est insuffisante
                         {
                             if (this.vitesse >= 0)
+                            {
                                 this.vitesse -= 1;
+                                Console.WriteLine("Freine");
+                            }
+                            else
+                                Console.WriteLine("maintient Vitesse");
                         }
                     }
                     else
