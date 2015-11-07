@@ -40,9 +40,9 @@ namespace IAAgents
         }
         private void GenerateRoute()
         {
-            Route route = new Route(300,20,new Position(290,0),Direction.EN_FACE);
-            Route routeSecondaire = new Route(220, 20, new Position(290, 260), Direction.EN_FACE);
-            Route routePrincipal2 = new Route(300, 20, new Position(0, 220), Direction.DROITE);
+            Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
+            Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
+            Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);
             Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
             KeyValuePair<Direction, Route> routePrincipalLie2 = new KeyValuePair<Direction, Route>(Direction.DROITE, routeSecondaire2);
