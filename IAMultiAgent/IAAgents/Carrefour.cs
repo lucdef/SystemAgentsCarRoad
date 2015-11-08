@@ -47,7 +47,7 @@ namespace IAAgents
         private void GenerateRoute()
         {
             Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
-            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
+            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 6), new TimeSpan(0, 0, 6));
             route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
             Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);

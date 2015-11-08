@@ -105,7 +105,7 @@ namespace IAAgents
 
         internal int getIndexRouteActuel()
         {
-            return this.indexRouteActuel; 
+            return this.indexRouteActuel;
         }
 
         public uint GetLongueur()
@@ -149,8 +149,8 @@ namespace IAAgents
             Vehicule vehiculeDevant = null;
             if (this.direction == Direction.EN_FACE)
             {
-                List<Vehicule>lstVehiculeOnTheRoad = lstVehicule.FindAll(v =>v.GetRouteActuel()==this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
-                if(lstVehiculeOnTheRoad.Count>0)
+                List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                if (lstVehiculeOnTheRoad.Count > 0)
                 {
                     vehiculeDevant = lstVehiculeOnTheRoad.First();
                 }
@@ -173,34 +173,34 @@ namespace IAAgents
             //if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             // {
             ////foreach (Vehicule vehicule in listVehicule)
-           // {
-                slow_down_or_accelerate(listVehicule);
-                //If englobant tout pour tourner c le cas ou on est sur la premiere route
-                
-                if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
-                {
-                  double posX = this.GetPosition().GetX();
-                    double posY = this.position.GetY() - STEP * vitesse;
-                    this.position = new Position(posX, posY);
-                }
-                else if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
-                {
-                    double posX = this.GetPosition().GetX() + STEP * vitesse;
-                    double posY = this.position.GetY() ;
-                    this.position = new Position(posX, posY);
-                }
-                //if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
-                //{
+            // {
+            slow_down_or_accelerate(listVehicule);
+            //If englobant tout pour tourner c le cas ou on est sur la premiere route
 
-                //}
-                // }
-
-                //Condition selon la direction actuel
-                //double posX = this.GetPosition().GetX();
-                //double posY = this.position.GetY() + STEP * vitesse;
-                //this.position = new Position(posX, posY);
-                //}
+            if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
+            {
+                double posX = this.GetPosition().GetX();
+                double posY = this.position.GetY() - STEP * vitesse;
+                this.position = new Position(posX, posY);
             }
+            else if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
+            {
+                double posX = this.GetPosition().GetX() + STEP * vitesse;
+                double posY = this.position.GetY();
+                this.position = new Position(posX, posY);
+            }
+            //if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
+            //{
+
+            //}
+            // }
+
+            //Condition selon la direction actuel
+            //double posX = this.GetPosition().GetX();
+            //double posY = this.position.GetY() + STEP * vitesse;
+            //this.position = new Position(posX, posY);
+            //}
+        }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)
         {
@@ -255,84 +255,100 @@ namespace IAAgents
 #if true
         private void slow_down_or_accelerate(List<Vehicule> listVehicule)
         {
-            Vehicule vDevant = GetVehiculeDevant( listVehicule);
+            Vehicule vDevant = GetVehiculeDevant(listVehicule);
             double dDistanceBetween;
             float fDistanceFreinage;
+            double routeLong = GetRouteActuel().GetLongueur();
+            double vehiLeftX = this.GetPosition().GetX();
+            double vehiRightX = vehiLeftX + this.GetLongueur();
+
+            /*
+            uint iResult;
+            if ((vehiRightX > routeLong - 100) && (vehiRightX < routeLong - 20))
+                iResult = 1;
+            else
+                iResult = 0;
+                */
 
             if (vDevant == null)
             {
-                if (this.vitesse < this.vitesseMax)
-                    this.vitesse += 1;
-                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                if (GetRouteActuel().GetFeu().isVert)
+                {
+                    if (this.vitesse < this.vitesseMax)
+                        this.vitesse += 1;
+                }
+
+                else
+                {
+                    if ((vehiRightX > routeLong - 100) && (vehiRightX < routeLong - 20))
+                    {
+                        Console.WriteLine("Je rentre dans la zone ");
+                        //#TODO : Rajouter l'appel de la fonction calcul_courbe_vitesse_distance
+                        if (this.vitesse > 0)
+                            this.vitesse -= 1;
+                    }
+                    else
+                    {
+                        if (this.vitesse < this.vitesseMax)
+                            this.vitesse += 1;
+                    }
+                }
+
             }
             else //(voiture_devant_exist)
             {
-                if(GetRouteActuel().GetFeu().isVert)
+                dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
+                fDistanceFreinage = calcul_distance_freinage();
+                double dDistanceEntreMarge = dDistanceBetween + ((vDevant.longueur) / 1);
+
+                if (GetRouteActuel().GetFeu().isVert)
                 {
-                    dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
-                    fDistanceFreinage = calcul_distance_freinage();
-                    //Console.WriteLine(String.Format("  {0:F20}", dDistanceBetween));
-                    if (dDistanceBetween >= this.longueur / 2)
+                    //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
+                    if (dDistanceEntreMarge >= fDistanceFreinage + 20)
                     {
-
-                        double dDistanceEntreMarge = dDistanceBetween + ((vDevant.longueur) / 1);
-
-                        Console.WriteLine("dDistanceEntreMarge");
-                        Console.WriteLine(String.Format("  {0:F20}", dDistanceEntreMarge));
-                        Console.WriteLine("fDistanceFreinage");
-                        Console.WriteLine(String.Format("  {0:F20}", fDistanceFreinage));
-
-                        //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
-                        if ( dDistanceEntreMarge >= fDistanceFreinage)
-                        {
-                            if (this.vitesse < this.vitesseMax)
-                            {
-                                this.vitesse += 1;
-                                Console.WriteLine("Accelere");
-                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
-                            }
-                            /*else
-                            {
-                                Console.WriteLine("maintient Vitesse");
-                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
-                            }*/
-                        }
-                        else  //  On doit freiner car la distance de freinage est insuffisante
-                        {
-                            if (this.vitesse >= 0)
-                            {
-                                this.vitesse -= 1;
-                                Console.WriteLine("Freine");
-                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
-                            }
-                            /*else
-                            {
-                                Console.WriteLine("maintient Vitesse");
-                                Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
-                            }*/
-                        }
+                        if (this.vitesse < this.vitesseMax)
+                            this.vitesse += 1;
+                    }
+                    else  //  On doit freiner car la distance de freinage est insuffisante
+                    {
+                        if (this.vitesse >= 0)
+                            this.vitesse -= 1;
                     }
                 }
                 else    //  feu rouge
                 {
-                    double vehiX = this.GetPosition().GetX();
-                    double routeLong = GetRouteActuel().GetLongueur();
+                    //Console.WriteLine("maintient Vitesse");
+                    //Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
+                    double dLimiteFreinage;
 
-                    //  Si j'ai pas depassé le feu
-                    //if ((vehiX < routeLong))
-                    //{
-                        //  Position vehicule + longueur vehicule ne depasse pas le feu + marge de freinage
-                        if ((this.GetPosition().GetX() + this.GetLongueur()) > (routeLong - 20))
+
+
+                    //  Si le véhicule de devant a depassé le feu route
+                    if ((vDevant.GetPosition().GetX()+ vDevant.GetLongueur()) > (routeLong))
+                        //  On se fixe comme limite pour freiner le X du feu
+                        dLimiteFreinage = routeLong;
+                    else
+                        //  On se fixe l'arrière de la voiture de devant car elle a pas encore depassé le feu route
+                        //  et donc c'est elle qui doit nous servir de limite pour le freinage
+                        dLimiteFreinage = vDevant.GetPosition().GetX();
+
+                    //  Position vehicule + longueur vehicule ne depasse pas le feu + marge de freinage
+                    if ((vehiRightX < (dLimiteFreinage - 20)) && (vehiRightX > (dLimiteFreinage - 80)))
+                    {
+                        if (this.vitesse >= 0)
                         {
-                            if (this.vitesse >= 0)
-                            {
-                                this.vitesse -= 1;
-                            }
+                            this.vitesse -= 1;
                         }
-                    //}
+                    }
+                    else
+                    {
+                        if (this.vitesse < this.vitesseMax)
+                            this.vitesse += 1;
+                    }
                 }
             }
         }
     }
 }
+
 #endif
