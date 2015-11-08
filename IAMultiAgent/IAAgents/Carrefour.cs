@@ -36,7 +36,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 8;
+            nbVehicule = 1;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -47,11 +47,11 @@ namespace IAAgents
         private void GenerateRoute()
         {
             Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
-            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 6), new TimeSpan(0, 0, 6));
+            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
             route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
             Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);
-            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
+            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 6));
             routePrincipal2.SetFeu(feuPrincipal2);
             Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
@@ -96,6 +96,7 @@ namespace IAAgents
                     break;
 
             }
+            direction = Direction.DROITE;
             return direction;
         }
        
