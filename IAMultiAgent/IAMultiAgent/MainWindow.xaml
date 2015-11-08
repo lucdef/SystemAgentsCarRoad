@@ -19,5 +19,7 @@
         <Label x:Name="lbNombreDeCamionInt" Content="" HorizontalAlignment="Left" Margin="770,270,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbNbTotalVehiculetxt" Content="Nombre total de vehicule : " HorizontalAlignment="Left" Margin="653,290,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbNombrTotaleDeVehiculeInt" Content="" HorizontalAlignment="Left" Margin="800,290,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy" Content="Vitesse :" HorizontalAlignment="Left" Margin="653,316,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbVitesseVehicule" Content="" HorizontalAlignment="Left" Margin="722,321,0,0" VerticalAlignment="Top" Width="67"/>
     </Grid>
 </Window>

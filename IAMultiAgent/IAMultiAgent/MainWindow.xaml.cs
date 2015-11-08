@@ -40,7 +40,7 @@ namespace IAMultiAgent
        // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
       //  carrefourCanvas.Background = imageBrush;
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 15);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 10);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -63,7 +63,10 @@ namespace IAMultiAgent
 
             List<Route> lstRoute = carrefour.GetListRoute();
             lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert;
-            lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert;
+            if(lstRoute.ElementAt(1).GetFeu().isVert)
+                lbEtatFeuGauche.Content = "vert";
+            else
+                lbEtatFeuGauche.Content = "rouge";
             lbNombreDeVoitureInt.Content = lstVehicule.FindAll(v => v is Voiture).Count;
 
             lbNombreDeCamionInt.Content = lstVehicule.FindAll(v => v is Camion).Count;

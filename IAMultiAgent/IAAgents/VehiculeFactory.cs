@@ -21,7 +21,7 @@ namespace IAAgents
             }
             if(nb>25)
             {
-                return vehicule = new Voiture(dir,route,24,12,250);
+                return vehicule = new Voiture(dir,route,24,12,50);
             }
             
             return new Voiture(dir, route, 24, 12, 50);
