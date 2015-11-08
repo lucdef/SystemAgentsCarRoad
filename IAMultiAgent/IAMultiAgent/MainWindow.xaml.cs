@@ -44,7 +44,8 @@ namespace IAMultiAgent
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-			dispatcherTimer.Interval = carrefour.GetSimulationSpeed();            dispatcherTimer.Start(); 
+			dispatcherTimer.Interval = carrefour.GetSimulationSpeed();
+            dispatcherTimer.Start(); 
         }
         void dispatcherTimer_Tick(object _sender, EventArgs _e)
         {
@@ -60,18 +61,24 @@ namespace IAMultiAgent
             {
                 DrawVehicule(vehicule);
             }
-
+            this.SetEtatFeuToUI();
+            this.SetInfoVehiculeToUi(lstVehicule);
+            
+            carrefourCanvas.UpdateLayout();
+        }
+        private void SetEtatFeuToUI()
+        {
+            //
             List<Route> lstRoute = carrefour.GetListRoute();
-            lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert;
-            if(lstRoute.ElementAt(1).GetFeu().isVert)
-                lbEtatFeuGauche.Content = "vert";
-            else
-                lbEtatFeuGauche.Content = "rouge";
+            lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert ? "Vert":"Rouge" ;
+            lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert ? "Vert" : "Rouge";
+        }
+        private void SetInfoVehiculeToUi(List<Vehicule>lstVehicule)
+        {
             lbNombreDeVoitureInt.Content = lstVehicule.FindAll(v => v is Voiture).Count;
 
             lbNombreDeCamionInt.Content = lstVehicule.FindAll(v => v is Camion).Count;
             lbNombrTotaleDeVehiculeInt.Content = lstVehicule.Count;
-            carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
         {
@@ -86,8 +93,9 @@ namespace IAMultiAgent
 
 
             rotateRectangle(voiture, voiture.Width, voiture.Height,vehicule.getAngle());
-
-            voiture.Margin = new Thickness(vehicule.GetPosition().GetX(),vehicule.GetPosition().GetY(),0,0);
+            
+        
+        voiture.Margin = new Thickness(vehicule.GetPosition().GetX(),vehicule.GetPosition().GetY(),0,0);
             carrefourCanvas.Children.Add(voiture);
 
         }
@@ -146,5 +154,15 @@ namespace IAMultiAgent
             RectToTransform.LayoutTransform = rt;
         }
 
+        private void tbTempFeuVert_KeyDown_1(object sender, KeyEventArgs e)
+        {
+
+        }
+       
+
+        private void tbTempFeuRouge_KeyDown_1(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }
