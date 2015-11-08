@@ -182,7 +182,7 @@ namespace IAAgents
 
             if (this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
-                if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetY())
+                if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY()+this.GetRouteActuel().GetLongueur()-5) >= this.GetPosition().GetY())
                 {
                     this.angle = this.angle - 45;
                     double posX = this.GetPosition().GetX()+3;

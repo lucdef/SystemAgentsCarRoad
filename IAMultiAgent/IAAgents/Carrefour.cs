@@ -20,9 +20,12 @@ namespace IAAgents
         static Random seedAleatoire;
         uint nbVehicule;
 
+         
+
         List<Vehicule> lstVehicule;
         List<Feu> lstFeux;
         List<Route> lstRoute;
+        static Random randomGenerator;
         TimeSpan simulationSpeed;
 
         public TimeSpan GetSimulationSpeed()
@@ -42,7 +45,8 @@ namespace IAAgents
             lstRoute = new List<Route>();
             GenerateRoute();
             seedAleatoire = new Random();
-          
+            randomGenerator = new Random(30101993);
+
         }
         private void GenerateRoute()
         {
@@ -204,7 +208,10 @@ namespace IAAgents
             Route route = this.lstRoute.Find(r => r.GetDirection() == randomDirection);
             seedAleatoire = new Random();
             itineraire.Add(route);
-            Route route2 = route.getRouteLie().Find(r => r.Value.GetDirection() == randomDirection).Value;/*route.getRouteLie().ElementAt(index).Value;*/
+            
+            int randomNb = randomGenerator.Next(0, 10);
+            int index = route.GetDirection() == Direction.EN_FACE ? randomNb < 4 ? 0 : 1 : randomNb > 4 ? 0 : 1;
+            Route route2 = route.getRouteLie().ElementAt(index).Value;/*route.getRouteLie().ElementAt(index).Value;*/
             itineraire.Add(route2);
             return itineraire;
         }
