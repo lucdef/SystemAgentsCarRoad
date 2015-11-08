@@ -36,7 +36,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 2;
+            nbVehicule = 8;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -82,7 +82,6 @@ namespace IAAgents
         {
             Direction direction;
             int nbAleatoire = seedAleatoire.Next(0, 100);
-            /*
             nbAleatoire = nbAleatoire > 50 ? 1 : 0;
             switch(nbAleatoire)
             {
@@ -97,8 +96,6 @@ namespace IAAgents
                     break;
 
             }
-            */
-            direction = Direction.DROITE;
             return direction;
         }
        
@@ -178,7 +175,7 @@ namespace IAAgents
                 {
 
                 if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                        && ((v.GetPosition().GetX()) <= vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/1)))
+                                        && ((v.GetPosition().GetX()) <= vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/2)))
                    {
 
 
@@ -204,12 +201,11 @@ namespace IAAgents
             List<Route> itineraire = new List<Route>();
             Direction randomDirection = GetRandomDirection();
             Route route = this.lstRoute.Find(r => r.GetDirection() == randomDirection);
+            seedAleatoire = new Random();
             itineraire.Add(route);
-            Route route2 = route.getRouteLie().ElementAt(seedAleatoire.Next(0, route.getRouteLie().Count()-1)).Value;
+            Route route2 = route.getRouteLie().Find(r => r.Value.GetDirection() == randomDirection).Value;/*route.getRouteLie().ElementAt(index).Value;*/
             itineraire.Add(route2);
             return itineraire;
-            
-
         }
         private void DestructeurVehicule(Vehicule vehicule)
         {

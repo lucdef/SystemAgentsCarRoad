@@ -64,6 +64,10 @@ namespace IAMultiAgent
             List<Route> lstRoute = carrefour.GetListRoute();
             lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert;
             lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert;
+            lbNombreDeVoitureInt.Content = lstVehicule.FindAll(v => v is Voiture).Count;
+
+            lbNombreDeCamionInt.Content = lstVehicule.FindAll(v => v is Camion).Count;
+            lbNombrTotaleDeVehiculeInt.Content = lstVehicule.Count;
             carrefourCanvas.UpdateLayout();
         }
         private void DrawVehicule(Vehicule vehicule)
@@ -120,7 +124,12 @@ namespace IAMultiAgent
         {
             if(e.Key ==Key.Enter)
             {
-                carrefour.SetNbVehicule(int.Parse(tbNbVehicule.Text));
+                int nbVehicule = carrefour.GetListVehicule().Count;
+                if (!int.TryParse(tbNbVehicule.Text, out nbVehicule))
+                    tbNbVehicule.Text = nbVehicule.ToString();
+
+                carrefour.SetNbVehicule(nbVehicule);
+               
             }
         }
         private void rotateRectangle(Rectangle RectToTransform, double middle_X, double middle_Y, double angle)

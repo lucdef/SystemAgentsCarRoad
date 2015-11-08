@@ -173,9 +173,49 @@ namespace IAAgents
             //if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             // {
             ////foreach (Vehicule vehicule in listVehicule)
-            // {
             slow_down_or_accelerate(listVehicule);
             //If englobant tout pour tourner c le cas ou on est sur la premiere route
+                
+            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            {
+                if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetY())
+                {
+                    this.angle = this.angle - 45;
+                    double posX = this.GetPosition().GetX()+3;
+                    double posY = this.position.GetY() - STEP * vitesse;
+                    this.position = new Position(posX, posY);
+                    if (this.angle == 0)
+                    {
+                        this.indexRouteActuel = 1;
+                    }
+                }
+                else
+                {
+                    double posX = this.GetPosition().GetX();
+                    double posY = this.position.GetY() - STEP * vitesse;
+                    this.position = new Position(posX, posY);
+                }
+            }
+            else if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
+            {
+                if (this.itineraire.ElementAt(1).GetDirection() == Direction.GAUCHE && this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetX() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetX())
+                {
+                    this.angle = this.angle + 45;
+                double posX = this.GetPosition().GetX() + STEP * vitesse;
+                double posY = this.position.GetY()+3;
+                this.position = new Position(posX, posY);
+                    if (this.angle == 90)
+                    {
+                        this.indexRouteActuel = 1;
+                    }
+                }
+                else
+                {
+                    double posX = this.GetPosition().GetX() + STEP * vitesse;
+                    double posY = this.position.GetY();
+                    this.position = new Position(posX, posY);
+                }
+            }
 
             if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
             {
@@ -189,17 +229,6 @@ namespace IAAgents
                 double posY = this.position.GetY();
                 this.position = new Position(posX, posY);
             }
-            //if(this.GetRouteActuel().GetDirection()==Direction.GAUCHE)
-            //{
-
-            //}
-            // }
-
-            //Condition selon la direction actuel
-            //double posX = this.GetPosition().GetX();
-            //double posY = this.position.GetY() + STEP * vitesse;
-            //this.position = new Position(posX, posY);
-            //}
         }
 
         public double calcul_distance_entre_les_deux_voitures(Vehicule vAction, Vehicule vToAvoid)

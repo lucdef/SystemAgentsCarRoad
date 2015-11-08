@@ -11,7 +11,7 @@ namespace IAAgents
         static Random randomVehiculeGenerator;
         public static Vehicule GetVehicule(Direction dir,List<Route> route)
         {
-            /*
+            
             randomVehiculeGenerator = new Random();
             double nb = (double)randomVehiculeGenerator.Next(0, 100);
             Vehicule vehicule;
@@ -23,7 +23,7 @@ namespace IAAgents
             {
                 return vehicule = new Voiture(dir,route,24,12,250);
             }
-            */
+            
             return new Voiture(dir, route, 24, 12, 50);
 
         }
