@@ -123,19 +123,22 @@ namespace IAAgents
                 //On detruit si hors de la fenêtre
                 if(vehicule.getIndexRouteActuel()==1)
                 {
-                    if(vehicule.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+                    if (vehicule.getIndexRouteActuel() == 1)
                     {
-                        if(vehicule.GetPosition().GetY()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetRouteActuel().GetLongueur())
+                        if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                         {
-                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            if (vehicule.GetPosition().GetY() <=0)
+                            {
+                                lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            }
                         }
-                    }
-                    if(vehicule.GetRouteActuel().GetDirection()==Direction.DROITE)
-                    {
-                        if(vehicule.GetPosition().GetX()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetLongueur())
+                        if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                         {
-                           
-                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            if (vehicule.GetPosition().GetX() >=480)
+                            {
+
+                                lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            }
                         }
                     }
                 }
