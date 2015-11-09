@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CarreFour" Height="476.8" Width="885.6">
     <Grid Name="test">
-        <Canvas Name="carrefourCanvas"  Background="Coral" HorizontalAlignment="Left" Height="480" Margin="0,0,245,0" VerticalAlignment="Top" Width="640" MaxWidth="640">
+        <Canvas Name="carrefourCanvas" HorizontalAlignment="Left" Height="480" Margin="0,0,245,0" VerticalAlignment="Top" Width="640" MaxWidth="640">
+           
         </Canvas>
         <Label x:Name="lbNbVoiture" Content="Nombre de vehicule : " HorizontalAlignment="Left" Margin="653,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbNbVehicule_KeyDown"/>
-        <Label x:Name="lbTempsFeuVert" Content="Temps feu vert : " HorizontalAlignment="Left" Margin="653,56,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbTempsFeuVert" Content="Temps feu vert : " HorizontalAlignment="Left" Margin="653,62,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbTempsFeuVert" HorizontalAlignment="Left" Height="23" Margin="653,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuVert_KeyDown_1"/>
 
         <Label x:Name="lbTempsFeuRouge" Content="Temps feu rouge : " HorizontalAlignment="Left" Margin="653,110,0,0" VerticalAlignment="Top"/>

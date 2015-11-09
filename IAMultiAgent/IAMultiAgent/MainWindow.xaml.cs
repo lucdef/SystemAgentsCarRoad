@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IAAgents;
 using System.Windows.Threading;
+using System.Windows.Interop;
 
 namespace IAMultiAgent
 {
@@ -37,8 +38,10 @@ namespace IAMultiAgent
 
             ImageBrush imageBrush = new ImageBrush();
             //Mettre le bon chemi
-       // imageBrush.ImageSource = new BitmapImage(new Uri(.. "image/carrefour.png", UriKind.Relative));
-      //  carrefourCanvas.Background = imageBrush;
+            var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(IAMultiAgent.Properties.Resources.carrefour.GetHbitmap(), IntPtr.Zero,
+                                  Int32Rect.Empty,
+                                  BitmapSizeOptions.FromEmptyOptions());
+            carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
             TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 10);
             carrefour.SetSimulationSpeed(simulationSpeed);
@@ -56,7 +59,7 @@ namespace IAMultiAgent
         private void Carrefour_carrefourUpdated(List<Vehicule> lstVehicule)
         {
             carrefourCanvas.Children.Clear();
-            DrawRoute();
+           // DrawRoute();
             foreach (Vehicule vehicule in lstVehicule)
             {
                 DrawVehicule(vehicule);
@@ -90,6 +93,7 @@ namespace IAMultiAgent
             voiture.Fill =  new SolidColorBrush(couleur);
             double dAngle = vehicule.getAngle();
             voiture.Stroke  = Brushes.Black;
+            
 
 
             rotateRectangle(voiture, voiture.Width, voiture.Height,vehicule.getAngle());
@@ -153,16 +157,57 @@ namespace IAMultiAgent
             };
             RectToTransform.LayoutTransform = rt;
         }
-
-        private void tbTempFeuVert_KeyDown_1(object sender, KeyEventArgs e)
+        private void rectangleMouseOver(object sender,MouseAction e)
         {
 
+        }
+        private void tbTempFeuVert_KeyDown_1(object sender, KeyEventArgs e)
+        {
+            if(e.Key==Key.Enter)
+            {
+                int tempsFeuVert = 6;
+                if(int.TryParse(tbTempsFeuVert.Text,out tempsFeuVert))
+                {
+                    if(tempsFeuVert>5)
+                    {
+                        TimeSpan timeSpanFeuVert1 = new TimeSpan(0,0, tempsFeuVert);
+                        TimeSpan timeSpanFeuRouge1 = new TimeSpan(0, 0, tempsFeuVert + 5);
+                        foreach(Route route in carrefour.GetListRoute())
+                        {
+                            route.GetFeu().tempsRouge = timeSpanFeuRouge1;
+                            route.GetFeu().tempsVert = timeSpanFeuVert1;
+                            route.GetFeu().tempsActivite = new TimeSpan(0, 0, 0, 0, 0);
+                            
+                        }
+
+                    }
+                }
+            }
         }
        
 
         private void tbTempFeuRouge_KeyDown_1(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                int tempsFeuRouge = 6;
+                if (int.TryParse(tbTempsFeuRouge.Text, out tempsFeuRouge))
+                {
+                    if (tempsFeuRouge > 10)
+                    {
+                        TimeSpan timeSpanFeuVert1 = new TimeSpan(0, 0, tempsFeuRouge-5);
+                        TimeSpan timeSpanFeuRouge1 = new TimeSpan(0, 0, tempsFeuRouge);
+                        foreach (Route route in carrefour.GetListRoute())
+                        {
+                            route.GetFeu().tempsRouge = timeSpanFeuRouge1;
+                            route.GetFeu().tempsVert = timeSpanFeuVert1;
+                            route.GetFeu().tempsActivite = new TimeSpan(0, 0, 0, 0, 0);
 
+                        }
+
+                    }
+                }
+            }
         }
     }
 }
