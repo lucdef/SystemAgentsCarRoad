@@ -51,11 +51,11 @@ namespace IAAgents
         private void GenerateRoute()
         {
             Route route = new Route(300,20,new Position(Width/2-10,Height),Direction.EN_FACE);
-            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 15));
+            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 25));
             route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
             Route routePrincipal2 = new Route(300, 20, new Position(0, Height/2), Direction.DROITE);
-            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 6));
+            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 20));
             routePrincipal2.SetFeu(feuPrincipal2);
             Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
@@ -124,32 +124,37 @@ namespace IAAgents
                 //On detruit si hors de la fenêtre
                 if(vehicule.getIndexRouteActuel()==1)
                 {
-                    if(vehicule.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+                    if (vehicule.getIndexRouteActuel() == 1)
                     {
-                        if(vehicule.GetPosition().GetY()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetRouteActuel().GetLongueur())
+                        if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                         {
-                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            if (vehicule.GetPosition().GetY() <=0)
+                            {
+                                lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            }
                         }
-                    }
-                    if(vehicule.GetRouteActuel().GetDirection()==Direction.DROITE)
-                    {
-                        if(vehicule.GetPosition().GetX()>=vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetLongueur())
+                        if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                         {
-                           
-                            lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            if (vehicule.GetPosition().GetX() >=640)
+                            {
+
+                                lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
+                            }
                         }
                     }
                 }
                 
                 
             }
+            //On détruit tout les élément de liste à détruire
             foreach(int index in lstVehiculeASupprimer)
             {
                 lstVehicule.RemoveAt(index);
             }
+
             if(nbVehicule>lstVehicule.Count)
             {
-                GenererVehicule(((int)nbVehicule)-lstVehicule.Count);
+                GenererVehicule(4);
             }
         }
 
