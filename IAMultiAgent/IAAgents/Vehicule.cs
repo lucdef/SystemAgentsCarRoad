@@ -151,24 +151,26 @@ namespace IAAgents
         //Méthode permettant de déterminer le vehicule devant 
         private Vehicule GetVehiculeDevant(List<Vehicule> lstVehicule)
         {
-            Vehicule vehiculeDevant = null;
+            Vehicule vDev = null;
+            List<Vehicule> lstVehiculeOnTheRoad = null;
+            string result = null;
+
             if (this.direction == Direction.EN_FACE)
             {
-                List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
-                {
-                    vehiculeDevant = lstVehiculeOnTheRoad.First();
-                }
+                    vDev = lstVehiculeOnTheRoad.First();
             }
             else if (this.direction == Direction.DROITE)
             {
-                List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
-                {
-                    vehiculeDevant = lstVehiculeOnTheRoad.First();
-                }
+                    vDev = lstVehiculeOnTheRoad.First();
+
+                result = string.Format("lstVehiculeOnTheRoad.Count = {0} VehiculeDEvant = {1}", lstVehiculeOnTheRoad.Count, vDev);
+                Console.WriteLine(result);
             }
-            return vehiculeDevant;
+            return vDev;
         }
 
 
@@ -278,6 +280,7 @@ namespace IAAgents
             double vehiLeftX = this.GetPosition().GetX();
             double vehiRightX = vehiLeftX + this.GetLongueur();
             string result;
+            double dDistanceBetweenWithSecurity = 0;
 
 
             if (vDevant == null)
@@ -324,16 +327,17 @@ namespace IAAgents
                         {
                             //  Il faut freiner au bon moment, c'est a dire, suivant la vitesse actuelle de la voiture, 
                             //  il faut commencer a décrémenter la vitesse pour s'arreter pile au passage pour piéton
-                            if(routeLong - DISTANCE_MARGE_PASSAGE_PIETON < vehiRightX + dDistanceFreinage * 3)
-                            if (this.vitesse > 0)
-                                this.vitesse -= 1;
+                            if (routeLong - DISTANCE_MARGE_PASSAGE_PIETON < vehiRightX + dDistanceFreinage * 3)
+                            {
+                                if (this.vitesse > 0)
+                                    this.vitesse -= 1;
+                            }
                        }
                     }
                 }
-                Console.WriteLine(result);
-                toto++;
+                //Console.WriteLine(result);
             }
-            /*
+            
             else //(voiture_devant_exist)
             {
                 //  Calcul distance entre la voiture de devant et la voiture de derrière
@@ -356,31 +360,21 @@ namespace IAAgents
                 }
                 else    //  feu rouge
                 {
-                    //Console.WriteLine("maintient Vitesse");
-                    //Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
-                    double dLimiteFreinage;
-
+                    double dPositionMaxNoCollision;
+                    double PositionDEvant = vDevant.GetPosition().GetX();
                     //  Si le véhicule de devant a depassé le feu 
                     if ((vDevant.GetPosition().GetX()+ vDevant.GetLongueur()) > (routeLong))
                         //  On se fixe comme limite pour freiner le X du feu
-                        dLimiteFreinage = routeLong - DISTANCE_MARGE_PASSAGE_PIETON;
+                        dPositionMaxNoCollision = routeLong - DISTANCE_MARGE_PASSAGE_PIETON;
                     else
                         //  On se fixe l'arrière de la voiture de devant car elle a pas encore depassé le feu
                         //  et donc c'est elle qui doit nous servir de limite pour le freinage
-                        dLimiteFreinage = vDevant.GetPosition().GetX() - DISTANCE_MARGE_VEHICULES;
-
-                    //  Position vehicule + longueur vehicule ne depasse pas le feu + marge de freinage
-                    //if ((vehiRightX < (dLimiteFreinage - 20)) && (vehiRightX > (dLimiteFreinage - 80)))
-                    //{
-                    //    if (this.vitesse >= 0)
-                    //    {
-                    //        this.vitesse -= 1;
-                    //    }
-                    //}
+                        dPositionMaxNoCollision = vDevant.GetPosition().GetX() - DISTANCE_MARGE_VEHICULES;
                     
-                    if ((dLimiteFreinage - dDistanceFreinage) < vehiRightX)
+                    if ((dPositionMaxNoCollision ) < ( vehiRightX + dDistanceFreinage + DISTANCE_MARGE_VEHICULES ))
                     {
-                        Console.WriteLine("Je rentre dans la zone ");
+                        result = string.Format("Boucle {0} : Je dois éviter le véhicule de devant : Vitesse = {1}", toto, this.vitesse);
+                        Console.WriteLine(result);
                         //#TODO : Rajouter l'appel de la fonction calcul_courbe_vitesse_distance
                         if (this.vitesse > 0)
                             this.vitesse -= 1;
@@ -392,7 +386,7 @@ namespace IAAgents
                     }
                 }
             }
-    */
+            toto++;
         }
     }
 }
