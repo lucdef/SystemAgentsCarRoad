@@ -37,7 +37,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 20;
+            nbVehicule = 3;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -98,7 +98,7 @@ namespace IAAgents
                     break;
 
             }
-            //direction = Direction.DROITE;
+            direction = Direction.DROITE;
             return direction;
         }
        
@@ -126,14 +126,14 @@ namespace IAAgents
                     {
                         if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                         {
-                            if (vehicule.GetPosition().GetY() <=0)
+                            if ((vehicule.GetPosition().GetY() + vehicule.GetLongueur()) <= 0)
                             {
                                 lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
                             }
                         }
                         if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                         {
-                            if (vehicule.GetPosition().GetX() >=640)
+                            if ((vehicule.GetPosition().GetX() + vehicule.GetLongueur()) >= Width)
                             {
 
                                 lstVehiculeASupprimer.Add(lstVehicule.IndexOf(vehicule));
@@ -183,7 +183,7 @@ namespace IAAgents
                 {
 
                 if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                        && ((v.GetPosition().GetX()) <= vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/2)))
+                                        && ((v.GetPosition().GetX()) < vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 1)))
                    {
 
 
@@ -194,7 +194,7 @@ namespace IAAgents
                 {
 
                     if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                            && ((v.GetPosition().GetY()) <= vehicule.GetPosition().GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/1)))
+                                            && ((v.GetPosition().GetY()) > vehicule.GetPosition().GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()/1)))
                     {
 
 
