@@ -15,7 +15,7 @@ namespace IAAgents
         protected uint largeur;
         protected double vitesseMax;
         Direction direction;
-        protected const double STEP = 0.030;
+        protected const double STEP = 0.02;
         protected int iDansZone = 0;
         protected const double DISTANCE_MARGE_VEHICULES = 20;
         protected const double DISTANCE_MARGE_PASSAGE_PIETON = 10;

@@ -43,7 +43,7 @@ namespace IAMultiAgent
                                   BitmapSizeOptions.FromEmptyOptions());
             carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 100);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 2);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
