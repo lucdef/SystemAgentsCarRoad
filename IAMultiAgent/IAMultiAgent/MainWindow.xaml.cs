@@ -59,7 +59,7 @@ namespace IAMultiAgent
         private void Carrefour_carrefourUpdated(List<Vehicule> lstVehicule)
         {
             carrefourCanvas.Children.Clear();
-           // DrawRoute();
+           DrawRoute();
             foreach (Vehicule vehicule in lstVehicule)
             {
                 DrawVehicule(vehicule);

@@ -41,6 +41,10 @@ namespace IAAgents
         Vehicule vehiculeDevant;
         bool estArreter;
         public string couleur { private set; get; }
+        public void setPosition(Position position)
+        {
+            this.position = position;
+        }
 
 
         public Vehicule(Direction dir, List<Route> itineraire)
