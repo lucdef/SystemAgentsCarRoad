@@ -155,20 +155,17 @@ namespace IAAgents
             List<Vehicule> lstVehiculeOnTheRoad = null;
             string result = null;
 
-            if (this.direction == Direction.EN_FACE)
+            if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
             {
-                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetY() > this.position.GetY()).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
                     vDev = lstVehiculeOnTheRoad.First();
             }
-            else if (this.direction == Direction.DROITE)
+            else if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
             {
-                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this).OrderBy(v => this.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetX() > this.position.GetX()).OrderBy(v => this.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
                     vDev = lstVehiculeOnTheRoad.First();
-
-                result = string.Format("lstVehiculeOnTheRoad.Count = {0} VehiculeDEvant = {1}", lstVehiculeOnTheRoad.Count, vDev);
-                Console.WriteLine(result);
             }
             return vDev;
         }
@@ -178,8 +175,6 @@ namespace IAAgents
         private void UpdatePosition(List<Vehicule> listVehicule)
         {
             slow_down_or_accelerate(listVehicule);
-            //Console.WriteLine("Vitesse du véhicule");
-            //Console.WriteLine(String.Format("  {0:F20}", this.vitesse));
             //If englobant tout pour tourner c le cas ou on est sur la premiere route
                 
             if (this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
@@ -232,33 +227,33 @@ namespace IAAgents
                         if (this.itineraire.ElementAt(1).GetDirection() == Direction.EN_FACE)
                         {
                             this.angle = this.angle - 45;
-                double posX = this.GetPosition().GetX() + STEP * vitesse;
+                            double posX = this.GetPosition().GetX() + STEP * vitesse;
                             double posY = this.position.GetY() + 3;
-                this.position = new Position(posX, posY);
+                            this.position = new Position(posX, posY);
                             if (this.angle == 0)
-                        this.indexRouteActuel = 1;
+                                this.indexRouteActuel = 1;
+                        }
+                        else
+                        {
+                            double posX = this.GetPosition().GetX() + STEP * vitesse;
+                            double posY = this.position.GetY();
+                            this.position = new Position(posX, posY);
+                            this.indexRouteActuel = 1;
+                        }
                     }
+                    else
+                    {
+                        double posX = this.GetPosition().GetX() + STEP * vitesse;
+                        double posY = this.position.GetY();
+                        this.position = new Position(posX, posY);
+                    }
+                }
                 else
                 {
                     double posX = this.GetPosition().GetX() + STEP * vitesse;
                     double posY = this.position.GetY();
                     this.position = new Position(posX, posY);
-                            this.indexRouteActuel = 1;
                 }
-            }
-                    else
-            {
-                        double posX = this.GetPosition().GetX() + STEP * vitesse;
-                        double posY = this.position.GetY();
-                this.position = new Position(posX, posY);
-            }
-                }
-                else
-            {
-                double posX = this.GetPosition().GetX() + STEP * vitesse;
-                double posY = this.position.GetY();
-                this.position = new Position(posX, posY);
-            }
             }
 
             //if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
@@ -319,13 +314,12 @@ namespace IAAgents
             double routeLong = GetRouteActuel().GetLongueur();
             double vehiLeftX = this.GetPosition().GetX();
             double vehiRightX = vehiLeftX + this.GetLongueur();
-            string result;
+            string result = null;
             double dDistanceBetweenWithSecurity = 0;
-
 
             if (vDevant == null)
             {
-                if (this.indexRouteActuel==0&&GetRouteActuel().GetFeu().isVert)
+                if (this.indexRouteActuel == 0 && GetRouteActuel().GetFeu().isVert)
                 {
                     result = string.Format("Le feu est vert : Boucle {0} Vitesse = {1}", toto, this.vitesse);
                     if (this.vitesse < this.vitesseMax)
@@ -337,7 +331,7 @@ namespace IAAgents
                     double dPositionDébutFreinage = (routeLong - DISTANCE_MARGE_PASSAGE_PIETON - dDistanceFreinage * 3);
 
                     //  Si le véhicule n'est pas rentré dans la zone de freinage
-                    if ((vehiRightX < dPositionDébutFreinage ) && ( iDansZone != 1))
+                    if ((vehiRightX < dPositionDébutFreinage) && (iDansZone != 1))
                     {
                         result = string.Format("Boucle {0} : Je suis avant ma zone de freinage : Vitesse = {1}", toto, this.vitesse);
                         if (this.vitesse < this.vitesseMax)
@@ -352,8 +346,8 @@ namespace IAAgents
                             this.vitesse += 1;
                         iDansZone = 0;
                     }
-                else
-                {
+                    else
+                    {
                         result = string.Format("Boucle {0} : Je suis dedans la zone de freinage : Vitesse = {1}", toto, this.vitesse);
                         //  La on voit que l'on aura pas le temps de freiner.
                         //  Donc on freine en urgence
@@ -364,34 +358,31 @@ namespace IAAgents
                                 this.vitesse -= 4;
                         }
                         else
-                    {
+                        {
                             //  Il faut freiner au bon moment, c'est a dire, suivant la vitesse actuelle de la voiture, 
                             //  il faut commencer a décrémenter la vitesse pour s'arreter pile au passage pour piéton
-<<<<<<< HEAD
                             if (routeLong - DISTANCE_MARGE_PASSAGE_PIETON < vehiRightX + dDistanceFreinage * 3)
                             {
                                 if (this.vitesse > 0)
                                     this.vitesse -= 1;
                             }
-                       }
-=======
-                            if(routeLong - DISTANCE_MARGE_PASSAGE_PIETON < vehiRightX + dDistanceFreinage * 3)
-                        if (this.vitesse > 0)
-                            this.vitesse -= 1;
-                    }
->>>>>>> d72d2c230bc1b400577c458f31a34f72faa87319
+                        }
+
+                        if (routeLong - DISTANCE_MARGE_PASSAGE_PIETON < vehiRightX + dDistanceFreinage * 3)
+                            if (this.vitesse > 0)
+                                this.vitesse -= 1;
                     }
                 }
-                //Console.WriteLine(result);
+                Console.WriteLine(result);
             }
-            
+
             else //(voiture_devant_exist)
             {
                 //  Calcul distance entre la voiture de devant et la voiture de derrière
                 //dDistanceBetween = calcul_distance_entre_les_deux_voitures(this, vDevant);
                 dDistanceBetweenWithSecurity = calcul_distance_entre_les_deux_voitures(this, vDevant) + DISTANCE_MARGE_VEHICULES;
 
-                if (GetRouteActuel().GetFeu().isVert)
+                if (this.indexRouteActuel == 0 && GetRouteActuel().GetFeu().isVert)
                 {
                     //  On a laissé suffisamment de distance avant de redémarrer et on peut encore accélérer
                     if (dDistanceBetweenWithSecurity >= dDistanceFreinage + DISTANCE_MARGE_VEHICULES)
@@ -410,32 +401,32 @@ namespace IAAgents
                     double dPositionMaxNoCollision;
                     double PositionDEvant = vDevant.GetPosition().GetX();
                     //  Si le véhicule de devant a depassé le feu 
-                    if ((vDevant.GetPosition().GetX()+ vDevant.GetLongueur()) > (routeLong))
+                    if ((vDevant.GetPosition().GetX() + vDevant.GetLongueur()) > (routeLong))
                         //  On se fixe comme limite pour freiner le X du feu
                         dPositionMaxNoCollision = routeLong - DISTANCE_MARGE_PASSAGE_PIETON;
                     else
                         //  On se fixe l'arrière de la voiture de devant car elle a pas encore depassé le feu
                         //  et donc c'est elle qui doit nous servir de limite pour le freinage
                         dPositionMaxNoCollision = vDevant.GetPosition().GetX() - DISTANCE_MARGE_VEHICULES;
-                    
-<<<<<<< HEAD
-                    if ((dPositionMaxNoCollision ) < ( vehiRightX + dDistanceFreinage + DISTANCE_MARGE_VEHICULES ))
+
+                    if ((dPositionMaxNoCollision) < (vehiRightX + dDistanceFreinage + DISTANCE_MARGE_VEHICULES))
                     {
-                        result = string.Format("Boucle {0} : Je dois éviter le véhicule de devant : Vitesse = {1}", toto, this.vitesse);
-                        Console.WriteLine(result);
-=======
-                    if ((dLimiteFreinage - dDistanceFreinage) < vehiRightX)
+                        //result = string.Format("Boucle {0} : Je dois éviter le véhicule de devant : Vitesse = {1}", toto, this.vitesse);
+                        //Console.WriteLine(result);
+
+                        if ((dPositionMaxNoCollision - dDistanceFreinage) < vehiRightX)
                         {
-                        Console.WriteLine("Je rentre dans la zone ");
->>>>>>> d72d2c230bc1b400577c458f31a34f72faa87319
-                        //#TODO : Rajouter l'appel de la fonction calcul_courbe_vitesse_distance
-                        if (this.vitesse > 0)
-                            this.vitesse -= 1;
+                            //Console.WriteLine("Je rentre dans la zone ");
+
+                            //#TODO : Rajouter l'appel de la fonction calcul_courbe_vitesse_distance
+                            if (this.vitesse > 0)
+                                this.vitesse -= 1;
                         }
-                    else
-                    {
-                        if (this.vitesse < this.vitesseMax)
-                            this.vitesse += 1;
+                        else
+                        {
+                            if (this.vitesse < this.vitesseMax)
+                                this.vitesse += 1;
+                        }
                     }
                 }
             }

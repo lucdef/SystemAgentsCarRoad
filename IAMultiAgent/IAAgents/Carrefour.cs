@@ -20,8 +20,6 @@ namespace IAAgents
         static Random seedAleatoire;
         uint nbVehicule;
 
-         
-
         List<Vehicule> lstVehicule;
         List<Feu> lstFeux;
         List<Route> lstRoute;
@@ -39,7 +37,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 2;
+            nbVehicule = 20;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -100,7 +98,7 @@ namespace IAAgents
                     break;
 
             }
-            direction = Direction.DROITE;
+            //direction = Direction.DROITE;
             return direction;
         }
        

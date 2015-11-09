@@ -24,7 +24,7 @@ namespace IAAgents
                 return vehicule = new Voiture(dir,route,24,12,50);
             }
             
-            return new Voiture(dir, route, 24, 12, 50);
+            return new Voiture(dir, route, 24, 12, 150);
 
         }
     }

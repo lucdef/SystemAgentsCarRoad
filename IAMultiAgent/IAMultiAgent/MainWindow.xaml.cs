@@ -37,13 +37,13 @@ namespace IAMultiAgent
             tempsactivite= new TimeSpan(0, 0, 0, 0, 0);
 
             ImageBrush imageBrush = new ImageBrush();
-            //Mettre le bon chemi
+            //Mettre le bon chemin
             var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(IAMultiAgent.Properties.Resources.carrefour.GetHbitmap(), IntPtr.Zero,
                                   Int32Rect.Empty,
                                   BitmapSizeOptions.FromEmptyOptions());
             carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 40);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 10);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
