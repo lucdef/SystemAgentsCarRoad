@@ -152,7 +152,7 @@ namespace IAAgents
 
             if(nbVehicule>lstVehicule.Count)
             {
-                GenererVehicule(lstVehicule.Count-(int)nbVehicule);
+                GenererVehicule(((int)nbVehicule) -lstVehicule.Count);
             }
         }
 
@@ -178,24 +178,29 @@ namespace IAAgents
             {
                 Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
                 vehicule.GetPositionInit();
+                Console.WriteLine("Direction" + (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE ? "face" : "droite") + " " + vehicule.GetRouteActuel().GetPosition().GetX() + " " + vehicule.GetRouteActuel().GetPosition().GetY());
 
                 if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                 {
                     List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel());
                     Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetPosition().GetX()).First():null ;
-                    if(vehiculeDevant!=null&&vehicule.GetRouteActuel().GetPosition().GetX()>vehiculeDevant.GetPosition().GetX())
+                    if(vehiculeDevant!=null&&vehicule.GetRouteActuel().GetPosition().GetX()<=vehiculeDevant.GetPosition().GetX())
                     {
-                        vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur(), vehicule.GetPosition().GetY()));
+                        vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() -vehicule.GetLongueur()- DISTANCE_ENTRE_VEHICULES , vehicule.GetPosition().GetY()));
+                        Console.WriteLine("A Droite Vehicule "+vehicule.GetPosition().GetX() + " Vehicule Devant" + vehiculeDevant.GetPosition().GetX());
                     }
                     lstVehicule.Add(vehicule); 
                 }
                 else if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                 {
                     List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel());
-                    Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetPosition().GetY()).Last() : null;
-                    if(vehiculeDevant!=null&&vehicule.GetRouteActuel().GetPosition().GetY()<vehiculeDevant.GetPosition().GetY()+vehiculeDevant.GetLongueur())
+                    Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetPosition().GetY()+v.GetLongueur()).Last() : null;
+                   if(vehiculeDevant!= null) Console.WriteLine("Devant" + (vehiculeDevant.GetPosition().GetY() + vehiculeDevant.GetLongueur()));
+                    if (vehiculeDevant != null && vehicule.GetRouteActuel().GetPosition().GetY()+vehicule.GetRouteActuel().GetLongueur()>vehiculeDevant.GetPosition().GetY()+vehiculeDevant.GetLongueur())
                     {
-                        vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX(), vehiculeDevant.GetPosition().GetY() +vehiculeDevant.GetLongueur()+ DISTANCE_ENTRE_VEHICULES));
+                        vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX(), vehiculeDevant.GetPosition().GetY() + vehiculeDevant.GetLongueur()+ DISTANCE_ENTRE_VEHICULES));
+                        Console.WriteLine("Vehicule" + vehicule.GetPosition().GetY() + " Vehicule Devant" + vehiculeDevant.GetPosition().GetY());
+
                     }
                     lstVehicule.Add(vehicule);
                 }

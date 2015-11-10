@@ -10,6 +10,7 @@ namespace IAAgents
     {
         GAUCHE,
         DROITE,
-        EN_FACE
+        EN_FACE,
+        EN_BAS
     }
 }

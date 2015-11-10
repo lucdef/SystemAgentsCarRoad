@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IAAgents
 {
-    public class Route
+    public class Route :ICollisionable
     {
         List<KeyValuePair<Direction,Route>> routeLie;
         uint largeur;
@@ -57,5 +57,15 @@ namespace IAAgents
         {
             return this.feu;
         }
+        public double GetX()
+        {
+            return this.position.GetX();
+        }
+        public double GetY()
+        {
+            return this.GetY();
+        }
+        
+        
     }
 }

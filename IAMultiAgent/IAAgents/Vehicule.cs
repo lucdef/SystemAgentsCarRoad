@@ -9,7 +9,7 @@ namespace IAAgents
 {
 
 
-    public abstract class Vehicule
+    public abstract class Vehicule : ICollisionable
     {
         protected uint longueur;
         protected uint largeur;
@@ -185,13 +185,13 @@ namespace IAAgents
             {
                 if(this.indexRouteActuel==0)
                 {
-                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() - this.GetRouteActuel().GetLongueur() + 10) >= this.GetPosition().GetY())
+                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() - this.GetRouteActuel().GetLongueur()) >= this.GetPosition().GetY()-this.GetLongueur())
                     {
                         if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
                         {
                             this.angle = this.angle + 45;
                             double posX = this.GetPosition().GetX() + 3;
-                            double posY = this.position.GetY() - STEP * vitesse;
+                            double posY = this.position.GetY() - ((STEP * vitesse)-1);
                             this.position = new Position(posX, posY);
                             if (this.angle == 90)
                                 this.indexRouteActuel = 1;
@@ -436,5 +436,176 @@ namespace IAAgents
             }
             toto++;
         }
+        public double GetX()
+        {
+            return this.position.GetX();
+        }
+        public double GetY()
+        {
+            return this.position.GetY();
+        }
+        public bool CollisionEnFace(double distanceSecurite)
+        {
+          return this.CollisionEnFace(this.vehiculeDevant, distanceSecurite);
+        }
+        /// <summary>
+        /// Méthode permettant de dire si un bojet va rentrer en collision selon la distance de sécurité
+        /// </summary>
+        /// <param name="objetAEviter"></param>
+        /// <param name="distanceSecurite"></param>
+        /// <returns></returns>
+        public bool CollisionEnFace(ICollisionable objetAEviter, double distanceSecurite)
+        {
+            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            {
+                return this.CollisionEnFaceDirectionEnFace(objetAEviter, distanceSecurite);
+            }
+            else if(this.GetRouteActuel().GetDirection()==Direction.DROITE)
+            {
+                return this.CollisionEnFaceDirectionDroite(objetAEviter, distanceSecurite);
+            }
+            else
+            {
+                //On retourne pas ce cas
+                return false;
+            }
+        }
+        private bool CollisionEnFaceDirectionDroite(ICollisionable objetAEviter,double distanceSecurite)
+        {
+            if (this.GetX() + this.longueur + distanceSecurite >= objetAEviter.GetX())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool CollisionEnFaceDirectionEnFace(ICollisionable objetAEviter,double distanceSecurite)
+        {
+            if (this.GetY() - this.longueur - distanceSecurite <= objetAEviter.GetY())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }/// <summary>
+        /// Retourne une direction où il risque d'y avoir une collision(Pas implementer)
+        /// </summary>
+        /// <returns></returns>
+        public Direction CollisionCoter()
+        {
+            return Direction.EN_BAS;
+        }
+        /// <summary>
+        /// Méthode calculant une distance entre le vehicule et la fin de la route
+        /// </summary>
+        /// <returns></returns>
+        public double DifferenceDistanceRoute()
+        {
+            return this.DifferenceDistanceRoute(this.GetRouteActuel());
+        }
+        public double DifferenceDistanceRoute(Route route)
+        {
+            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            {
+                return  (this.GetY() - this.GetLongueur())- (route.GetY() - route.GetLongueur());
+            }
+            else
+            {
+                return (route.GetX() + route.GetLongueur()) - (this.GetX() + this.GetLongueur());
+            }
+        }
+        /// <summary>
+        /// New méthode pour déterminer si le vehicule accélère ou décèlere
+        /// </summary>
+        /// <param name="lstVehicule"></param>
+        public void UpdateVitesseVehicule(List<Vehicule>lstVehicule)
+        {
+            //On met à jour le véhicule devant
+            this.GetVehiculeDevant(lstVehicule);
+            if(vehiculeDevant== null)
+            {
+                if (this.indexRouteActuel==0&&this.CollisionEnFace(this.GetRouteActuel(),5))
+                {
+                    if(!this.GetRouteActuel().GetFeu().isVert)
+                    {
+                        double distanceAuFeu = DifferenceDistanceRoute();
+                        if (distanceAuFeu>15)//15 c'est la distance de sécurite ou de freinage
+                        {
+                            this.Accelere(1);
+                        }
+                        else if(distanceAuFeu<=5)
+                        {
+                            this.vitesse = 0;
+                        }
+                        else
+                        {
+                            this.Decelere(1);
+                        }
+
+                    }
+                    else
+                    {
+                        this.Accelere(1);
+                    }
+                }
+            }
+            else //Vehicule Devant
+            {
+                if(CollisionEnFace(this.calcul_distance_freinage()))
+                {
+                    if(this.DistanceVehiculeDevant()>=this.calcul_distance_freinage())
+                    {
+                        this.Accelere(1);
+                    }
+                    else if(DistanceVehiculeDevant()==0)
+                    {
+                        this.vitesse = 0;
+                    }
+                    else
+                    {
+                        this.Decelere(1);
+                    }
+                }
+                else
+                {
+                    this.Accelere(1);
+                }
+            }
+        }
+        public void Accelere(int vitesse)
+        {
+            if(this.vitesse+vitesse<this.vitesseMax)
+            {
+                this.vitesse +=vitesse;
+            }
+        }
+        public void Decelere(int vitesse)
+        {
+            if(this.vitesse>0)
+            {
+                this.vitesse -=vitesse;
+            }
+        }
+        public double DistanceVehiculeDevant()
+        {
+            if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
+            {
+                return ((this.GetY()-this.longueur)-this.vehiculeDevant.GetY());
+            }
+            else
+            {
+                return this.vehiculeDevant.GetX() - (this.GetX() + this.GetLongueur());
+            }
+        }
+        public Direction GetDirection()
+        {
+            return this.direction;
+        }
     }
+
+   
 }
