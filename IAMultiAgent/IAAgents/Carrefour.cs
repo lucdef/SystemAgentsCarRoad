@@ -217,6 +217,29 @@ namespace IAAgents
         }
             }
         }
+        public void GenererVehiculeNew()
+        {
+            int NBVehicule = 10;
+            for(int i = 0;i<NBVehicule; i++)
+            {
+                Vehicule vehiculeCree = VehiculeFactory.GetVehicule(Direction.EN_FACE, GenererItineraire());
+                vehiculeCree.GetPositionInit();
+                List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel().GetDirection() == Direction.EN_FACE && vehiculeCree.CollisionEnFace(v, 0));
+                Vehicule vehiculeDevant = lstTemp.Count>0? lstTemp.OrderBy(v => v.GetY()).Last():null;
+                if(vehiculeDevant!= null)
+                {
+                    vehiculeCree.setPosition(new Position(vehiculeDevant.GetX(), vehiculeDevant.GetY() + vehiculeCree.GetLongueur() + 10));
+                    lstVehicule.Add(vehiculeCree);
+                }
+                else
+                {
+                    lstVehicule.Add(vehiculeCree);
+                }
+
+                
+
+            }
+        }
         //Méthode permettant de générer un itinéraire aléatoire pour une voiture
         private List<Route> GenererItineraire()
         {

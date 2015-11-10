@@ -1,6 +1,6 @@
 ﻿namespace IAAgents
 {
-    public interface ICollisionable
+    public interface ICollisionable //Interface pour être plus générique
     {
          Position GetPosition();
         double GetX();

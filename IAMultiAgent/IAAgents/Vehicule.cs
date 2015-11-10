@@ -569,7 +569,7 @@ namespace IAAgents
                 if(CollisionEnFace(this.calcul_distance_freinage()))
                 {
                     if(this.DistanceVehiculeDevant()>=this.calcul_distance_freinage())
-                    {
+                    { 
                         this.Accelere(1);
                     }
                     else if(DistanceVehiculeDevant()==0)
