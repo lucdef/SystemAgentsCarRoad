@@ -43,7 +43,7 @@ namespace IAMultiAgent
                                   BitmapSizeOptions.FromEmptyOptions());
             carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 10);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 2);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -71,7 +71,6 @@ namespace IAMultiAgent
         }
         private void SetEtatFeuToUI()
         {
-            //
             List<Route> lstRoute = carrefour.GetListRoute();
             lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert ? "Vert":"Rouge" ;
             lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert ? "Vert" : "Rouge";

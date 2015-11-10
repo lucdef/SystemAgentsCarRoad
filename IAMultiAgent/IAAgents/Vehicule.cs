@@ -15,7 +15,7 @@ namespace IAAgents
         protected uint largeur;
         protected double vitesseMax;
         Direction direction;
-        protected const double STEP = 0.005;
+        protected const double STEP = 0.02;
         protected int iDansZone = 0;
         protected const double DISTANCE_MARGE_VEHICULES = 20;
         protected const double DISTANCE_MARGE_PASSAGE_PIETON = 10;
@@ -157,7 +157,6 @@ namespace IAAgents
         {
             Vehicule vDev = null;
             List<Vehicule> lstVehiculeOnTheRoad = null;
-            string result = null;
 
             if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
             {
@@ -320,6 +319,7 @@ namespace IAAgents
             double vehiRightX = vehiLeftX + this.GetLongueur();
             string result = null;
             double dDistanceBetweenWithSecurity = 0;
+            double dPositionMaxNoCollision;
 
             if (vDevant == null)
             {
@@ -377,7 +377,7 @@ namespace IAAgents
                                 this.vitesse -= 1;
                     }
                 }
-                Console.WriteLine(result);
+               // Console.WriteLine(result);
             }
 
             else //(voiture_devant_exist)
@@ -398,12 +398,11 @@ namespace IAAgents
                     {
                         if (this.vitesse >= 0)
                             this.vitesse -= 1;
+                        dDistanceFreinage = calcul_distance_freinage();
                     }
                 }
                 else    //  feu rouge
-                {
-                    double dPositionMaxNoCollision;
-                    double PositionDEvant = vDevant.GetPosition().GetX();
+                {                    
                     //  Si le véhicule de devant a depassé le feu 
                     if ((vDevant.GetPosition().GetX() + vDevant.GetLongueur()) > (routeLong))
                         //  On se fixe comme limite pour freiner le X du feu
@@ -411,25 +410,37 @@ namespace IAAgents
                     else
                         //  On se fixe l'arrière de la voiture de devant car elle a pas encore depassé le feu
                         //  et donc c'est elle qui doit nous servir de limite pour le freinage
-                        dPositionMaxNoCollision = vDevant.GetPosition().GetX() - DISTANCE_MARGE_VEHICULES;
+                        dPositionMaxNoCollision = vehiRightX + DISTANCE_MARGE_VEHICULES + dDistanceFreinage;
 
-                    if ((dPositionMaxNoCollision) < (vehiRightX + dDistanceFreinage + DISTANCE_MARGE_VEHICULES))
+
+                    if (dPositionMaxNoCollision > (vDevant.GetPosition().GetX()))
                     {
-                        //result = string.Format("Boucle {0} : Je dois éviter le véhicule de devant : Vitesse = {1}", toto, this.vitesse);
-                        //Console.WriteLine(result);
-
-                        if ((dPositionMaxNoCollision - dDistanceFreinage) < vehiRightX)
+                        if (listVehicule.ElementAt(2) != null)
                         {
-                            //Console.WriteLine("Je rentre dans la zone ");
-
-                            //#TODO : Rajouter l'appel de la fonction calcul_courbe_vitesse_distance
-                            if (this.vitesse > 0)
-                                this.vitesse -= 1;
+                            if ((this == listVehicule.ElementAt(2)))
+                            {
+                                result = string.Format("Boucle {0} : Je dois freiner !!!", toto);
+                                Console.WriteLine(result);
+                            }
                         }
-                        else
+                        if (this.vitesse > 0)
+                            this.vitesse -= 1;
+                    }
+                    else
+                    {
+                        if ((dPositionMaxNoCollision) <= (vehiRightX + dDistanceFreinage + DISTANCE_MARGE_VEHICULES))
                         {
+                            if (listVehicule.ElementAt(2) != null)
+                            {
+                                if ((this == listVehicule.ElementAt(2)))
+                                {
+                                    result = string.Format("Boucle {0} : Je dois accelerer !!!", toto);
+                                    Console.WriteLine(result);
+                                }
+                            }
+
                             if (this.vitesse < this.vitesseMax)
-                                this.vitesse += 1;
+                                    this.vitesse += 1;
                         }
                     }
                 }
