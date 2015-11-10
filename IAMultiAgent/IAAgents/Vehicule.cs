@@ -177,7 +177,8 @@ namespace IAAgents
         //Changer nom update positionetvitesse
         private void UpdatePosition(List<Vehicule> listVehicule)
         {
-            slow_down_or_accelerate(listVehicule);
+            // slow_down_or_accelerate(listVehicule);
+            UpdateVitesseVehicule(listVehicule);
             //If englobant tout pour tourner c le cas ou on est sur la premiere route
                 
             if (this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
@@ -536,7 +537,7 @@ namespace IAAgents
         public void UpdateVitesseVehicule(List<Vehicule>lstVehicule)
         {
             //On met à jour le véhicule devant
-            this.GetVehiculeDevant(lstVehicule);
+           this.vehiculeDevant = this.GetVehiculeDevant(lstVehicule);
             if(vehiculeDevant== null)
             {
                 if (this.indexRouteActuel==0&&this.CollisionEnFace(this.GetRouteActuel(),5))
@@ -544,17 +545,20 @@ namespace IAAgents
                     if(!this.GetRouteActuel().GetFeu().isVert)
                     {
                         double distanceAuFeu = DifferenceDistanceRoute();
-                        if (distanceAuFeu>15)//15 c'est la distance de sécurite ou de freinage
+                        if (distanceAuFeu > this.calcul_distance_freinage()+DISTANCE_MARGE_PASSAGE_PIETON)//15 c'est la distance de sécurite ou de freinage
                         {
                             this.Accelere(1);
                         }
-                        else if(distanceAuFeu<=5)
-                        {
-                            this.vitesse = 0;
-                        }
                         else
                         {
-                            this.Decelere(1);
+                            if (distanceAuFeu <= DISTANCE_MARGE_PASSAGE_PIETON)
+                            {
+                                this.vitesse = 0;
+                            }
+                            else
+                            {
+                                this.Decelere(1);
+                            }
                         }
 
                     }
@@ -612,6 +616,7 @@ namespace IAAgents
                 return this.vehiculeDevant.GetX() - (this.GetX() + this.GetLongueur());
             }
         }
+
         public Direction GetDirection()
         {
             return this.direction;

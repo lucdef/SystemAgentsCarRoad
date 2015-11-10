@@ -43,7 +43,7 @@ namespace IAMultiAgent
                                   BitmapSizeOptions.FromEmptyOptions());
             carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 2);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 20);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -189,7 +189,7 @@ namespace IAMultiAgent
         {
             if (e.Key == Key.Enter)
             {
-                int tempsFeuRouge = 6;
+                int tempsFeuRouge = 15 ;
                 if (int.TryParse(tbTempsFeuRouge.Text, out tempsFeuRouge))
                 {
                     if (tempsFeuRouge > 10)
