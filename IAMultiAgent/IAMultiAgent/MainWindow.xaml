@@ -39,7 +39,7 @@
         <Ellipse Fill="#ff0000" HorizontalAlignment="Left" Height="6" Margin="361,274,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Name="rougeFeuFace" Visibility="Hidden"/>
         <Ellipse Fill="LightGreen" HorizontalAlignment="Left" Height="6" Margin="361,285,0,0" Stroke="Black" Name="vertFeuFace" VerticalAlignment="Top" Width="6"/>
         <Label x:Name="label1" Content="En bas :" HorizontalAlignment="Left" Margin="645,39,0,0" VerticalAlignment="Top" FontSize="8"/>
-        <Label x:Name="label2" Content="A droite :" HorizontalAlignment="Left" Margin="51.6,39,0,0" VerticalAlignment="Top" FontSize="8" Grid.Column="1"/>
+        <Label x:Name="label2" Content="A gauche :" HorizontalAlignment="Left" Margin="51.6,39,0,0" VerticalAlignment="Top" FontSize="8" Grid.Column="1"/>
 
     </Grid>
 </Window>
