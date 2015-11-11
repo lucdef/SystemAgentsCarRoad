@@ -61,6 +61,7 @@ namespace IAMultiAgent
             carrefourCanvas.Children.Clear();
         //   DrawRoute();
             this.SetEtatFeuToUI();
+            SetEtatRouteUI();
             foreach (Vehicule vehicule in lstVehicule)
             {
                 DrawVehicule(vehicule);
@@ -79,6 +80,14 @@ namespace IAMultiAgent
 
             rougeFeuFace.Visibility = lstRoute.ElementAt(0).GetFeu().isVert ? Visibility.Hidden : Visibility.Visible;
             lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert ? "Vert" : "Rouge";
+        }
+        private void SetEtatRouteUI()
+        {
+            int nbVehiculeVoieBas = carrefour.GetListVehicule().FindAll(v => v.GetDirection() == Direction.EN_FACE && v.GetRouteActuel() == carrefour.GetListRoute().ElementAt(0)&&v.GetRouteActuel().GetY()>=v.GetY()-v.GetLongueur()).Count();
+            lbVoieBasEtat.Content = nbVehiculeVoieBas<5?"Voie libre":nbVehiculeVoieBas < 8 ? "Ralentissement" : "Bouchon";
+
+            int nbVehiculeVoieGauche = carrefour.GetListVehicule().FindAll(v => v.GetDirection() == Direction.DROITE && v.GetRouteActuel() == carrefour.GetListRoute().ElementAt(1)&&v.GetRouteActuel().GetX()<=v.GetX()+v.GetX()).Count();
+            lbVoieGaucheEtat.Content = nbVehiculeVoieGauche < 5 ? "Voie libre" : nbVehiculeVoieGauche< 8 ? "Ralentissement" : "Bouchon";
         }
         private void SetInfoVehiculeToUi(List<Vehicule>lstVehicule)
         {
