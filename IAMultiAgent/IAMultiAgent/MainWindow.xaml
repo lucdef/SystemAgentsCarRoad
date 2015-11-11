@@ -6,13 +6,13 @@
         <Canvas Name="carrefourCanvas" HorizontalAlignment="Left" Height="480" Margin="0,0,245,0" VerticalAlignment="Top" Width="640" MaxWidth="640">
            
         </Canvas>
-        <Label x:Name="lbNbVoiture" Content="Nombre de vehicule : " HorizontalAlignment="Left" Margin="653,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbNbVehicule_KeyDown"/>
-        <Label x:Name="lbTempsFeuVert" Content="Temps feu vert : " HorizontalAlignment="Left" Margin="653,62,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbTempsFeuVert" HorizontalAlignment="Left" Height="23" Margin="653,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuVert_KeyDown_1"/>
+        <Label x:Name="lbNbVoiture" Content="Nombre de vehicule : " HorizontalAlignment="Left" Margin="653,21,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbNbVehicule_KeyDown"/>
+        <Label x:Name="lbTempsFeuVert" Content="Temps feu vert : " HorizontalAlignment="Left" Margin="653,75,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbTempsFeuVert" HorizontalAlignment="Left" Height="23" Margin="653,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuVert_KeyDown_1"/>
 
-        <Label x:Name="lbTempsFeuRouge" Content="Temps feu rouge : " HorizontalAlignment="Left" Margin="653,110,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbTempsFeuRouge" HorizontalAlignment="Left" Height="23" Margin="653,135,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuRouge_KeyDown_1"/>
+        <Label x:Name="lbTempsFeuRouge" Content="Temps feu rouge : " HorizontalAlignment="Left" Margin="653,129,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbTempsFeuRouge" HorizontalAlignment="Left" Height="23" Margin="653,160,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuRouge_KeyDown_1"/>
         <Label x:Name="lbInfo" Content="Information sur la simulation" HorizontalAlignment="Left" Margin="653,183,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label" Content="Feu en face : " HorizontalAlignment="Left" Margin="653,214,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbEtatFeuDevannt" Content=" " HorizontalAlignment="Left" Margin="735,214,0,0" VerticalAlignment="Top"/>

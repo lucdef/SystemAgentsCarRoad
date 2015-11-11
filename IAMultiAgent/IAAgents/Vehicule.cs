@@ -202,7 +202,7 @@ namespace IAAgents
                         else
                         {
                             double posX = this.GetPosition().GetX();
-                            double posY = this.position.GetY() - STEP_ROTATION * vitesse;
+                            double posY = this.position.GetY() - STEP * vitesse;
                             this.position = new Position(posX, posY);
                             indexRouteActuel = 1;
                         }

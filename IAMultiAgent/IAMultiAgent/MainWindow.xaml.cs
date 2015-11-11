@@ -60,11 +60,12 @@ namespace IAMultiAgent
         {
             carrefourCanvas.Children.Clear();
            DrawRoute();
+            this.SetEtatFeuToUI();
             foreach (Vehicule vehicule in lstVehicule)
             {
                 DrawVehicule(vehicule);
             }
-            this.SetEtatFeuToUI();
+           
             this.SetInfoVehiculeToUi(lstVehicule);
             
             carrefourCanvas.UpdateLayout();
@@ -178,8 +179,17 @@ namespace IAMultiAgent
                             route.GetFeu().tempsActivite = new TimeSpan(0, 0, 0, 0, 0);
                             
                         }
+                        tbTempsFeuRouge.Text = (tempsFeuVert + 5).ToString();
 
                     }
+                    else
+                    {
+                        tbTempsFeuVert.Text = tempsFeuVert.ToString();
+                    }
+                }
+                else
+                {
+                    tbTempsFeuVert.Text = tempsFeuVert.ToString();
                 }
             }
         }
@@ -203,8 +213,17 @@ namespace IAMultiAgent
                             route.GetFeu().tempsActivite = new TimeSpan(0, 0, 0, 0, 0);
 
                         }
+                        tbTempsFeuVert.Text = (tempsFeuRouge - 5).ToString();
 
                     }
+                    else
+                    {
+                        tbTempsFeuRouge.Text = tempsFeuRouge.ToString();
+                    }
+                }
+                else
+                {
+                    tbTempsFeuRouge.Text = tempsFeuRouge.ToString();
                 }
             }
         }

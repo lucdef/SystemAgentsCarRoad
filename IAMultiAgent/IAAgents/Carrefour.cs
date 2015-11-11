@@ -153,7 +153,8 @@ namespace IAAgents
 
             if (nbVehicule > lstVehicule.Count)
             {
-                GenererVehicule();
+                int nbVehiculeToAdd = ((int)this.nbVehicule) - lstVehicule.Count;
+                GenererVehicule(nbVehiculeToAdd);
             }
         }
 
@@ -173,34 +174,53 @@ namespace IAAgents
             }
         }
         //Méthode permettant d'ajouter des voitures de manière aléatoire
-        private void GenererVehicule()
+        private void GenererVehicule(int nbVehiculeToAdd)
         {
-            for (int i = 0; i < nbVehicule; i++)
+            for (int i = 0; i < nbVehiculeToAdd; i++)
             {
                 Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
                 vehicule.GetPositionInit();
 
                 if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
                 {
-
                     if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                            && ((v.GetPosition().GetX()) <= vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 2)))
+                                                       && ((v.GetPosition().GetX()) < vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 1)))
                     {
 
 
                         this.lstVehicule.Add(vehicule);
+                    }
+                    else
+                    {
+                        List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel());
+                        Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetPosition().GetX()).First() : null;
+                        if (vehiculeDevant != null && vehicule.GetRouteActuel().GetPosition().GetX() > vehiculeDevant.GetPosition().GetX())
+                        {
+                            vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur(), vehicule.GetPosition().GetY()));
+
+
+                        }
+                        lstVehicule.Add(vehicule);
                     }
                 }
                 else if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                 {
-
-                    if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                            && ((v.GetPosition().GetY()) >= vehicule.GetPosition().GetY() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur() / 1)))
+                    Vehicule vehiculeDevant;
+                    List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && v != vehicule && v.GetY() < vehicule.GetY() - vehicule.GetLongueur() && v.GetPosition().GetY() < vehicule.GetY()).OrderBy(v => vehicule.GetY()).ToList();
+                    if (lstVehiculeOnTheRoad.Count > 0)
                     {
+                        vehiculeDevant = lstVehiculeOnTheRoad.Last();
 
-
-                        this.lstVehicule.Add(vehicule);
+                        vehicule.setPosition(new Position(vehiculeDevant.GetX(), vehiculeDevant.GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()));
+                        lstVehicule.Add(vehicule);
                     }
+                    else
+                    {
+                        lstVehicule.Add(vehicule);
+                    }
+
+
+
                 }
             }
         }
