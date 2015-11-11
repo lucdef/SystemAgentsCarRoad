@@ -139,11 +139,16 @@ namespace IAMultiAgent
         {
             if(e.Key ==Key.Enter)
             {
-                int nbVehicule = carrefour.GetListVehicule().Count;
+                int nbVehicule = carrefour.GetListVehicule().FindAll(v=>v.GetDirection()==Direction.EN_FACE).Count;
+
+                int nbVehiculeDroite = carrefour.GetListVehicule().FindAll(v => v.GetDirection() == Direction.DROITE).Count;
                 if (!int.TryParse(tbNbVehicule.Text, out nbVehicule))
                     tbNbVehicule.Text = nbVehicule.ToString();
+                if(!int.TryParse(tbNbVehicule_2.Text, out nbVehiculeDroite))
+                    tbNbVehicule_2.Text = nbVehiculeDroite.ToString();
 
                 carrefour.SetNbVehicule(nbVehicule);
+                carrefour.SetNbVehiculeDroit(nbVehiculeDroite);
                
             }
         }

@@ -7,7 +7,7 @@
            
         </Canvas>
         <Label x:Name="lbNbVoiture" Content="Nombre de vehicule : " HorizontalAlignment="Left" Margin="653,21,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbNbVehicule_KeyDown"/>
+        <TextBox x:Name="tbNbVehicule" HorizontalAlignment="Left" Height="23" Margin="653,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"  KeyDown="tbNbVehicule_KeyDown"/>
         <Label x:Name="lbTempsFeuVert" Content="Temps feu vert : " HorizontalAlignment="Left" Margin="653,75,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbTempsFeuVert" HorizontalAlignment="Left" Height="23" Margin="653,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"  KeyDown="tbTempFeuVert_KeyDown_1"/>
 
@@ -26,5 +26,6 @@
         <Label x:Name="lbNombrTotaleDeVehiculeInt" Content="" HorizontalAlignment="Left" Margin="800,290,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label_Copy" Content="Vitesse :" HorizontalAlignment="Left" Margin="653,316,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbVitesseVehicule" Content="" HorizontalAlignment="Left" Margin="722,321,0,0" VerticalAlignment="Top" Width="67"/>
+        <TextBox x:Name="tbNbVehicule_2" HorizontalAlignment="Left" Height="23" Margin="749,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"  KeyDown="tbNbVehicule_KeyDown"/>
     </Grid>
 </Window>

@@ -19,6 +19,7 @@ namespace IAAgents
         const string Couleur = "#ffffff";
         static Random seedAleatoire;
         uint nbVehicule;
+        uint nbVehiculeDroite;
 
 
 
@@ -151,21 +152,22 @@ namespace IAAgents
                 lstVehicule.RemoveAt(index);
             }
 
-            if (nbVehicule > lstVehicule.Count)
-            {
-                int nbVehiculeToAdd = ((int)this.nbVehicule) - lstVehicule.Count;
-                GenererVehicule(nbVehiculeToAdd);
-            }
+            
+                GenererVehicule();
+            
         }
 
-
+        public void SetNbVehiculeDroit(int nbVehiculeDroite)
+        {
+            this.nbVehiculeDroite = (uint)nbVehiculeDroite;
+        }
 
         private void UpdateFeux()
         {
             foreach (Route route in lstRoute)
             {
 
-                 Feu feu = route.GetFeu();
+                Feu feu = route.GetFeu();
                 feu.tempsActivite = feu.tempsActivite.Add(this.simulationSpeed);
                 if ((feu.isVert && feu.tempsVert == feu.tempsActivite) || (!feu.isVert && feu.tempsRouge == feu.tempsActivite))
                 {
@@ -174,61 +176,48 @@ namespace IAAgents
             }
         }
         //Méthode permettant d'ajouter des voitures de manière aléatoire
-        private void GenererVehicule(int nbVehiculeToAdd)
+        private void GenererVehicule()
         {
-            for (int i = 0; i < nbVehiculeToAdd; i++)
+            for (int i = 0; i < this.nbVehicule - lstVehicule.FindAll(v => v.GetDirection() == Direction.EN_FACE).Count; i++)
             {
-                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
+
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire(Direction.EN_FACE));
+                vehicule.GetPositionInit();
+                Vehicule vehiculeDevant;
+                List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && v != vehicule && v.GetY() < vehicule.GetY() - vehicule.GetLongueur() && v.GetPosition().GetY() < vehicule.GetY()).OrderBy(v => vehicule.GetY()).ToList();
+                if (lstVehiculeOnTheRoad.Count > 0)
+                {
+                    vehiculeDevant = lstVehiculeOnTheRoad.Last();
+
+                    vehicule.setPosition(new Position(vehiculeDevant.GetX(), vehiculeDevant.GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()));
+                    lstVehicule.Add(vehicule);
+                }
+                else
+                {
+                    lstVehicule.Add(vehicule);
+                }
+            }
+            for (int i = 0; i < this.nbVehiculeDroite - lstVehicule.FindAll(v => v.GetDirection() == Direction.DROITE).Count; i++)
+            {
+                Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire(Direction.DROITE));
                 vehicule.GetPositionInit();
 
-                if (vehicule.GetRouteActuel().GetDirection() == Direction.DROITE)
+                List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel()&&v.GetX()>=vehicule.GetX());
+                Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetX()).First() : null;
+                if (vehiculeDevant != null && vehicule.GetRouteActuel().GetPosition().GetX() > vehiculeDevant.GetPosition().GetX())
                 {
-                    if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                                       && ((v.GetPosition().GetX()) < vehicule.GetPosition().GetX() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 1)))
-                    {
-
-
-                        this.lstVehicule.Add(vehicule);
-                    }
-                    else
-                    {
-                        List<Vehicule> lstTemp = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel());
-                        Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetPosition().GetX()).First() : null;
-                        if (vehiculeDevant != null && vehicule.GetRouteActuel().GetPosition().GetX() > vehiculeDevant.GetPosition().GetX())
-                        {
-                            vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur(), vehicule.GetPosition().GetY()));
-
-
-                        }
-                        lstVehicule.Add(vehicule);
-                    }
-                }
-                else if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
-                {
-                    Vehicule vehiculeDevant;
-                    List<Vehicule> lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel() && v != vehicule && v.GetY() < vehicule.GetY() - vehicule.GetLongueur() && v.GetPosition().GetY() < vehicule.GetY()).OrderBy(v => vehicule.GetY()).ToList();
-                    if (lstVehiculeOnTheRoad.Count > 0)
-                    {
-                        vehiculeDevant = lstVehiculeOnTheRoad.Last();
-
-                        vehicule.setPosition(new Position(vehiculeDevant.GetX(), vehiculeDevant.GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur()));
-                        lstVehicule.Add(vehicule);
-                    }
-                    else
-                    {
-                        lstVehicule.Add(vehicule);
-                    }
-
+                    vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur(), vehicule.GetPosition().GetY()));
 
 
                 }
+                     lstVehicule.Add(vehicule);
             }
         }
         //Méthode permettant de générer un itinéraire aléatoire pour une voiture
-        private List<Route> GenererItineraire()
+        private List<Route> GenererItineraire(Direction direction)
         {
             List<Route> itineraire = new List<Route>();
-            Direction randomDirection = GetRandomDirection();
+            Direction randomDirection = direction;
             Route route = this.lstRoute.Find(r => r.GetDirection() == randomDirection);
             //Route route = this.lstRoute.Find(r => r.GetDirection() == Direction.EN_FACE);
             seedAleatoire = new Random();
