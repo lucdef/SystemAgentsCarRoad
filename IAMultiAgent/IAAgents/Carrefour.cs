@@ -50,6 +50,7 @@ namespace IAAgents
             randomGenerator = new Random(30101993);
 
         }
+
         private void GenerateRoute()
         {
             Route route = new Route(250, 20, new Position(Width / 2 - 10, Height), Direction.EN_FACE);
