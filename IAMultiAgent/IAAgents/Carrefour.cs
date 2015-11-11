@@ -52,11 +52,11 @@ namespace IAAgents
         private void GenerateRoute()
         {
             Route route = new Route(250, 20, new Position(Width / 2 - 10, Height), Direction.EN_FACE);
-            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 25));
+            Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 25));
             route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
             Route routePrincipal2 = new Route(300, 20, new Position(0, Height / 2), Direction.DROITE);
-            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 20));
+            Feu feuPrincipal2 = new Feu(false, new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 25));
             routePrincipal2.SetFeu(feuPrincipal2);
             Route routeSecondaire2 = new Route(300, 20, new Position(340, 220), Direction.DROITE);
             KeyValuePair<Direction, Route> routePrincipalLie = new KeyValuePair<Direction, Route>(Direction.EN_FACE, routeSecondaire);
@@ -206,7 +206,7 @@ namespace IAAgents
                 Vehicule vehiculeDevant = lstTemp.Count > 0 ? lstTemp.OrderBy(v => v.GetX()).First() : null;
                 if (vehiculeDevant != null && vehicule.GetRouteActuel().GetPosition().GetX() > vehiculeDevant.GetPosition().GetX())
                 {
-                    vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur(), vehicule.GetPosition().GetY()));
+                    vehicule.setPosition(new Position(vehiculeDevant.GetPosition().GetX() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur()-vehicule.GetX(), vehicule.GetPosition().GetY()));
 
 
                 }

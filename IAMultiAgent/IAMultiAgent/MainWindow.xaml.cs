@@ -43,7 +43,7 @@ namespace IAMultiAgent
                                   BitmapSizeOptions.FromEmptyOptions());
             carrefourCanvas.Background = new ImageBrush(bitmapSource);
             carrefour.carrefourUpdatedEvent += Carrefour_carrefourUpdated;
-            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 20);
+            TimeSpan simulationSpeed = new TimeSpan(0, 0, 0, 0, 45);
             carrefour.SetSimulationSpeed(simulationSpeed);
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -59,7 +59,7 @@ namespace IAMultiAgent
         private void Carrefour_carrefourUpdated(List<Vehicule> lstVehicule)
         {
             carrefourCanvas.Children.Clear();
-           DrawRoute();
+        //   DrawRoute();
             this.SetEtatFeuToUI();
             foreach (Vehicule vehicule in lstVehicule)
             {
@@ -176,7 +176,7 @@ namespace IAMultiAgent
                     if(tempsFeuVert>5)
                     {
                         TimeSpan timeSpanFeuVert1 = new TimeSpan(0,0, tempsFeuVert);
-                        TimeSpan timeSpanFeuRouge1 = new TimeSpan(0, 0, tempsFeuVert + 5);
+                        TimeSpan timeSpanFeuRouge1 = new TimeSpan(0, 0, tempsFeuVert + 6);
                         foreach(Route route in carrefour.GetListRoute())
                         {
                             route.GetFeu().tempsRouge = timeSpanFeuRouge1;
@@ -209,7 +209,7 @@ namespace IAMultiAgent
                 {
                     if (tempsFeuRouge > 10)
                     {
-                        TimeSpan timeSpanFeuVert1 = new TimeSpan(0, 0, tempsFeuRouge-5);
+                        TimeSpan timeSpanFeuVert1 = new TimeSpan(0, 0, tempsFeuRouge-6);
                         TimeSpan timeSpanFeuRouge1 = new TimeSpan(0, 0, tempsFeuRouge);
                         foreach (Route route in carrefour.GetListRoute())
                         {
