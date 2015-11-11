@@ -45,6 +45,7 @@
     <Compile Include="Carrefour.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Feu.cs" />
+    <Compile Include="ICollisionable.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Route.cs" />

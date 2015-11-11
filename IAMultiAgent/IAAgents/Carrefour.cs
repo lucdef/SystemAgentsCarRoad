@@ -39,7 +39,7 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 1;
+            nbVehicule = 10;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
@@ -50,7 +50,7 @@ namespace IAAgents
         }
         private void GenerateRoute()
         {
-            Route route = new Route(300, 20, new Position(Width / 2 - 10, Height), Direction.EN_FACE);
+            Route route = new Route(250, 20, new Position(Width / 2 - 10, Height), Direction.EN_FACE);
             Feu feuPrincipal = new Feu(true, new TimeSpan(0, 0, 15), new TimeSpan(0, 0, 25));
             route.SetFeu(feuPrincipal);
             Route routeSecondaire = new Route(220, 20, new Position(Width / 2 - 10, 0), Direction.EN_FACE);
@@ -100,7 +100,7 @@ namespace IAAgents
                     break;
 
             }
-            direction = Direction.DROITE;
+            //direction = Direction.DROITE;
             return direction;
         }
 
@@ -108,7 +108,6 @@ namespace IAAgents
         {
             UpdateFeux();
             UpdateVoiture();
-            UpdateFeux();
             if (carrefourUpdatedEvent != null)
             {
                 carrefourUpdatedEvent(lstVehicule);
@@ -154,7 +153,7 @@ namespace IAAgents
 
             if (nbVehicule > lstVehicule.Count)
             {
-                GenererVehicule(4);
+                GenererVehicule();
             }
         }
 
@@ -174,7 +173,7 @@ namespace IAAgents
             }
         }
         //Méthode permettant d'ajouter des voitures de manière aléatoire
-        private void GenererVehicule(int NbVehiculeToAdd)
+        private void GenererVehicule()
         {
             for (int i = 0; i < nbVehicule; i++)
             {
@@ -196,7 +195,7 @@ namespace IAAgents
                 {
 
                     if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                            && ((v.GetPosition().GetY()) <= vehicule.GetPosition().GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 1)))
+                                            && ((v.GetPosition().GetY()) >= vehicule.GetPosition().GetY() - DISTANCE_ENTRE_VEHICULES - vehicule.GetLongueur() / 1)))
                     {
 
 
@@ -211,12 +210,14 @@ namespace IAAgents
             List<Route> itineraire = new List<Route>();
             Direction randomDirection = GetRandomDirection();
             Route route = this.lstRoute.Find(r => r.GetDirection() == randomDirection);
+            //Route route = this.lstRoute.Find(r => r.GetDirection() == Direction.EN_FACE);
             seedAleatoire = new Random();
             itineraire.Add(route);
 
             int randomNb = randomGenerator.Next(0, 10);
             int index = route.GetDirection() == Direction.EN_FACE ? randomNb < 4 ? 0 : 1 : randomNb > 4 ? 0 : 1;
-            Route route2 = route.getRouteLie().ElementAt(index).Value;/*route.getRouteLie().ElementAt(index).Value;*/
+            Route route2 = route.getRouteLie().ElementAt(index).Value;
+            //Route route2 = this.lstRoute.Find(r => r.GetDirection() == Direction.DROITE);
             itineraire.Add(route2);
             return itineraire;
         }

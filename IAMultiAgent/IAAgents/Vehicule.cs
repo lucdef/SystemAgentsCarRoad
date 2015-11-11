@@ -15,10 +15,12 @@ namespace IAAgents
         protected uint largeur;
         protected double vitesseMax;
         Direction direction;
-        protected const double STEP = 0.02;
+        protected const double STEP = 0.08;
+        protected const double STEP_ROTATION = 0.01;
         protected int iDansZone = 0;
-        protected const double DISTANCE_MARGE_VEHICULES = 20;
-        protected const double DISTANCE_MARGE_PASSAGE_PIETON = 10;
+        protected const double DISTANCE_MARGE_VEHICULES = 8;
+        protected const double DISTANCE_MARGE_VEHICULES_FREINAGE = 6;
+        protected const double DISTANCE_MARGE_PASSAGE_PIETON = 8;
         protected double coefDir_XFreinage_YVitesse;
         protected double vitesse;
         protected double angle;
@@ -160,15 +162,15 @@ namespace IAAgents
 
             if (this.GetRouteActuel().GetDirection() == Direction.EN_FACE)
             {
-                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetY() > this.position.GetY()).OrderBy(v => this.GetPosition().GetY() - v.GetPosition().GetY()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetY() < this.position.GetY()).OrderBy(v => this.GetPosition().GetY() ).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
-                    vDev = lstVehiculeOnTheRoad.First();
+                    vDev = lstVehiculeOnTheRoad.Last();
             }
             else if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
             {
-                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetX() > this.position.GetX()).OrderBy(v => this.GetPosition().GetX() - v.GetPosition().GetX()).ToList();
+                lstVehiculeOnTheRoad = lstVehicule.FindAll(v => v.GetRouteActuel() == this.GetRouteActuel() && v != this && v.GetPosition().GetX() > this.position.GetX()).OrderBy(v => this.GetPosition().GetX() ).ToList();
                 if (lstVehiculeOnTheRoad.Count > 0)
-                    vDev = lstVehiculeOnTheRoad.First();
+                    vDev = lstVehiculeOnTheRoad.Last();
             }
             return vDev;
         }
@@ -185,13 +187,13 @@ namespace IAAgents
             {
                 if(this.indexRouteActuel==0)
                 {
-                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() - this.GetRouteActuel().GetLongueur()) >= this.GetPosition().GetY()-this.GetLongueur())
+                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() - this.GetRouteActuel().GetLongueur()) >= this.GetPosition().GetY())
                     {
-                        if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
+                        if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE)
                         {
                             this.angle = this.angle + 45;
-                            double posX = this.GetPosition().GetX() + 3;
-                            double posY = this.position.GetY() - ((STEP * vitesse)-1);
+                            double posX = this.GetPosition().GetX() + 10;
+                            double posY = this.position.GetY() - STEP_ROTATION * vitesse+4;
                             this.position = new Position(posX, posY);
                             if (this.angle == 90)
                                 this.indexRouteActuel = 1;
@@ -200,7 +202,7 @@ namespace IAAgents
                         else
                         {
                             double posX = this.GetPosition().GetX();
-                            double posY = this.position.GetY() - STEP * vitesse;
+                            double posY = this.position.GetY() - STEP_ROTATION * vitesse;
                             this.position = new Position(posX, posY);
                             indexRouteActuel = 1;
                         }
@@ -208,7 +210,7 @@ namespace IAAgents
                     else
                     {
                         double posX = this.GetPosition().GetX();
-                        double posY = this.position.GetY() - STEP * vitesse;
+                        double posY = this.position.GetY() - STEP_ROTATION * vitesse;
                         this.position = new Position(posX, posY);
                     }
                    
@@ -216,7 +218,7 @@ namespace IAAgents
                 else
                 {
                     double posX = this.GetPosition().GetX();
-                    double posY = this.position.GetY() - STEP * vitesse;
+                    double posY = this.position.GetY() - STEP_ROTATION * vitesse;
                     this.position = new Position(posX, posY);
                 }
     
@@ -225,21 +227,21 @@ namespace IAAgents
             {
                 if (this.indexRouteActuel == 0)
                 {
-                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetX() + this.GetRouteActuel().GetLongueur() + 10) <= this.GetPosition().GetX())
+                    if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetX() + this.GetRouteActuel().GetLongueur()) <= this.GetPosition().GetX())
                     {
                         //Changement de route
                         if (this.itineraire.ElementAt(1).GetDirection() == Direction.EN_FACE)
                         {
                             this.angle = this.angle - 45;
-                            double posX = this.GetPosition().GetX() + STEP * vitesse;
-                            double posY = this.position.GetY() + 3;
+                            double posX = this.GetPosition().GetX() + STEP_ROTATION * vitesse;
+                            double posY = this.position.GetY() + 10;
                             this.position = new Position(posX, posY);
                             if (this.angle == 0)
                                 this.indexRouteActuel = 1;
                         }
                         else
                         {
-                            double posX = this.GetPosition().GetX() + STEP * vitesse;
+                            double posX = this.GetPosition().GetX() + STEP_ROTATION * vitesse;
                             double posY = this.position.GetY();
                             this.position = new Position(posX, posY);
                             this.indexRouteActuel = 1;
@@ -247,14 +249,14 @@ namespace IAAgents
                     }
                     else
                     {
-                        double posX = this.GetPosition().GetX() + STEP * vitesse;
+                        double posX = this.GetPosition().GetX() + STEP_ROTATION * vitesse;
                         double posY = this.position.GetY();
                         this.position = new Position(posX, posY);
                     }
                 }
                 else
                 {
-                    double posX = this.GetPosition().GetX() + STEP * vitesse;
+                    double posX = this.GetPosition().GetX() + STEP_ROTATION * vitesse;
                     double posY = this.position.GetY();
                     this.position = new Position(posX, posY);
                 }
@@ -495,7 +497,7 @@ namespace IAAgents
         }
         private bool CollisionEnFaceDirectionEnFace(ICollisionable objetAEviter,double distanceSecurite)
         {
-            if (this.GetY() - this.longueur - distanceSecurite <= objetAEviter.GetY())
+            if (objetAEviter.GetY() - this.longueur - distanceSecurite <= this.GetY())
             {
                 return true;
             }
@@ -523,7 +525,7 @@ namespace IAAgents
         {
             if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
-                return  (this.GetY() - this.GetLongueur())- (route.GetY() - route.GetLongueur());
+                return  (this.GetY() - this.GetLongueur()) - (route.GetY() - route.GetLongueur());
             }
             else
             {
@@ -537,15 +539,17 @@ namespace IAAgents
         public void UpdateVitesseVehicule(List<Vehicule>lstVehicule)
         {
             //On met à jour le véhicule devant
-           this.vehiculeDevant = this.GetVehiculeDevant(lstVehicule);
-            if(vehiculeDevant== null)
+            this.vehiculeDevant = this.GetVehiculeDevant(lstVehicule);
+
+            if (vehiculeDevant== null)
             {
-                if (this.indexRouteActuel==0&&this.CollisionEnFace(this.GetRouteActuel(),5))
+                double dDistanceFreinage = this.calcul_distance_freinage() * 3;
+                double distanceAuFeu = DifferenceDistanceRoute();
+                if (this.indexRouteActuel==0 && (distanceAuFeu <= (dDistanceFreinage + DISTANCE_MARGE_PASSAGE_PIETON)))
                 {
                     if(!this.GetRouteActuel().GetFeu().isVert)
                     {
-                        double distanceAuFeu = DifferenceDistanceRoute();
-                        if (distanceAuFeu > this.calcul_distance_freinage()+DISTANCE_MARGE_PASSAGE_PIETON)//15 c'est la distance de sécurite ou de freinage
+                        if (distanceAuFeu > dDistanceFreinage+DISTANCE_MARGE_PASSAGE_PIETON)//15 c'est la distance de sécurite ou de freinage
                         {
                             this.Accelere(1);
                         }
@@ -553,7 +557,7 @@ namespace IAAgents
                         {
                             if (distanceAuFeu <= DISTANCE_MARGE_PASSAGE_PIETON)
                             {
-                                this.vitesse = 0;
+                               this.vitesse = 0;
                             }
                             else
                             {
@@ -567,14 +571,23 @@ namespace IAAgents
                         this.Accelere(1);
                     }
                 }
+                else
+                {
+                    this.Accelere(1);
+                }
             }
             else //Vehicule Devant
             {
-                if(CollisionEnFace(this.calcul_distance_freinage()))
+                if(CollisionEnFace(DISTANCE_MARGE_VEHICULES_FREINAGE))
                 {
-                    if(this.DistanceVehiculeDevant()>=this.calcul_distance_freinage())
-                    { 
-                        this.Accelere(1);
+                    if(this.DistanceVehiculeDevant()>this.calcul_distance_freinage() + DISTANCE_MARGE_VEHICULES_FREINAGE)
+                    {
+                        if (this.DistanceVehiculeDevant() > DISTANCE_MARGE_VEHICULES_FREINAGE)
+                        {
+                            this.Accelere(1);
+                            string result = string.Format("Boucle {0} : Je dois accelerer !!!", toto);
+                            Console.WriteLine(result);
+                        }
                     }
                     else if(DistanceVehiculeDevant()==0)
                     {
@@ -582,7 +595,14 @@ namespace IAAgents
                     }
                     else
                     {
-                        this.Decelere(1);
+                        if (this.vitesse > vehiculeDevant.GetVitesse())
+                            this.vitesse = vehiculeDevant.GetVitesse();
+                        else
+                        {
+                            this.Decelere(1);
+                            string result = string.Format("Boucle {0} : Je dois freiner !!!", toto);
+                            Console.WriteLine(result);
+                        }
                     }
                 }
                 else
@@ -590,6 +610,7 @@ namespace IAAgents
                     this.Accelere(1);
                 }
             }
+            toto++;
         }
         public void Accelere(int vitesse)
         {
@@ -609,11 +630,11 @@ namespace IAAgents
         {
             if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
-                return ((this.GetY()-this.longueur)-this.vehiculeDevant.GetY());
+                return ((this.GetY()-vehiculeDevant.longueur)-this.vehiculeDevant.GetY());
             }
             else
             {
-                return this.vehiculeDevant.GetX() - (this.GetX() + this.GetLongueur());
+                return this.vehiculeDevant.GetX() - (this.GetX() + vehiculeDevant.GetLongueur());
             }
         }
 
