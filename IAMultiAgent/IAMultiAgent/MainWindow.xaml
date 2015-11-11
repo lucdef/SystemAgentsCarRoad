@@ -27,5 +27,9 @@
         <Label x:Name="label_Copy" Content="Vitesse :" HorizontalAlignment="Left" Margin="653,316,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbVitesseVehicule" Content="" HorizontalAlignment="Left" Margin="722,321,0,0" VerticalAlignment="Top" Width="67"/>
         <TextBox x:Name="tbNbVehicule_2" HorizontalAlignment="Left" Height="23" Margin="749,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"  KeyDown="tbNbVehicule_KeyDown"/>
+        <Rectangle Fill="#808080" HorizontalAlignment="Left" Height="24" Margin="355,270,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
+        <Ellipse Fill="#ff0000" HorizontalAlignment="Left" Height="6" Margin="361,274,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Name="rougeFeuFace" Visibility="Hidden"/>
+        <Ellipse Fill="LightGreen" HorizontalAlignment="Left" Height="6" Margin="361,285,0,0" Stroke="Black" Name="vertFeuFace" VerticalAlignment="Top" Width="6"/>
+
     </Grid>
 </Window>

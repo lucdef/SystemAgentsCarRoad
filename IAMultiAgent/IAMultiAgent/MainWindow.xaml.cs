@@ -74,6 +74,10 @@ namespace IAMultiAgent
         {
             List<Route> lstRoute = carrefour.GetListRoute();
             lbEtatFeuDevannt.Content = lstRoute.ElementAt(0).GetFeu().isVert ? "Vert":"Rouge" ;
+
+            vertFeuFace.Visibility = lstRoute.ElementAt(0).GetFeu().isVert ? Visibility.Visible : Visibility.Hidden;
+
+            rougeFeuFace.Visibility = lstRoute.ElementAt(0).GetFeu().isVert ? Visibility.Hidden : Visibility.Visible;
             lbEtatFeuGauche.Content = lstRoute.ElementAt(1).GetFeu().isVert ? "Vert" : "Rouge";
         }
         private void SetInfoVehiculeToUi(List<Vehicule>lstVehicule)
