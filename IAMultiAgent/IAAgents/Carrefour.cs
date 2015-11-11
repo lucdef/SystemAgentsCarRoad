@@ -40,7 +40,8 @@ namespace IAAgents
 
         public Carrefour()
         {
-            nbVehicule = 10;
+            nbVehicule = 0;
+            nbVehiculeDroite = 0;
             lstVehicule = new List<Vehicule>();
             lstFeux = new List<Feu>();
             lstRoute = new List<Route>();
