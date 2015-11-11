@@ -63,7 +63,7 @@ namespace IAAgents
         }
         public double GetY()
         {
-            return this.GetY();
+            return this.position.GetY();
         }
         
         

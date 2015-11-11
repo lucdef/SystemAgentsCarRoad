@@ -100,7 +100,7 @@ namespace IAAgents
                     break;
 
             }
-            direction = Direction.DROITE;
+            direction = Direction.EN_FACE;
             return direction;
         }
 
@@ -176,7 +176,7 @@ namespace IAAgents
         //Méthode permettant d'ajouter des voitures de manière aléatoire
         private void GenererVehicule(int NbVehiculeToAdd)
         {
-            for (int i = 0; i < nbVehicule; i++)
+            for (int i = 0; i < NbVehiculeToAdd; i++)
             {
                 Vehicule vehicule = VehiculeFactory.GetVehicule(this.GetRandomDirection(), GenererItineraire());
                 vehicule.GetPositionInit();
@@ -194,16 +194,26 @@ namespace IAAgents
                 }
                 else if (vehicule.GetRouteActuel().GetDirection() == Direction.EN_FACE)
                 {
-
-                    if (!lstVehicule.Exists(v => v.GetRouteActuel() == vehicule.GetRouteActuel()
-                                            && ((v.GetPosition().GetY()) <= vehicule.GetPosition().GetY() + DISTANCE_ENTRE_VEHICULES + vehicule.GetLongueur() / 1)))
+                    List<Vehicule> lstvehiculeDevant = lstVehicule.Count > 0 ? lstVehicule.FindAll(v => v.GetRouteActuel() == vehicule.GetRouteActuel() &&  v.GetY()>vehicule.GetRouteActuel().GetY()).OrderBy(v => v.GetY()).ToList():null ;
+                    
+                    if (lstvehiculeDevant != null&&lstvehiculeDevant.Count>0)
                     {
+                        Vehicule vehiculeDevant = lstvehiculeDevant.Last();
+                        Position newPosition = new Position(vehiculeDevant.GetX(), vehiculeDevant.GetY()+ vehicule.GetLongueur() + DISTANCE_ENTRE_VEHICULES);
+                        vehicule.setPosition(newPosition);
 
 
-                        this.lstVehicule.Add(vehicule);
+                        lstVehicule.Add(vehicule);
+                    }
+                    else
+                    {
+                        lstVehicule.Add(vehicule);
+                    }
+                    
+
                     }
                 }
-            }
+            
         }
         //Méthode permettant de générer un itinéraire aléatoire pour une voiture
         private List<Route> GenererItineraire()

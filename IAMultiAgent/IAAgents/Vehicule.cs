@@ -187,7 +187,7 @@ namespace IAAgents
                 {
                     if (this.vitesse > 0 && (this.GetRouteActuel().GetPosition().GetY() - this.GetRouteActuel().GetLongueur()) >= this.GetPosition().GetY()-this.GetLongueur())
                     {
-                        if (this.GetRouteActuel().GetDirection() == Direction.DROITE)
+                        if (this.itineraire.ElementAt(1).GetDirection() == Direction.DROITE)
                         {
                             this.angle = this.angle + 45;
                             double posX = this.GetPosition().GetX() + 3;
@@ -523,7 +523,7 @@ namespace IAAgents
         {
             if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
-                return  (this.GetY() - this.GetLongueur())- (route.GetY() - route.GetLongueur());
+                return  (this.GetY() = this.GetLongueur())- (route.GetY() - route.GetLongueur());
             }
             else
             {
@@ -572,7 +572,7 @@ namespace IAAgents
             {
                 if(CollisionEnFace(this.calcul_distance_freinage()))
                 {
-                    if(this.DistanceVehiculeDevant()>=this.calcul_distance_freinage())
+                    if(this.DistanceVehiculeDevant()>=this.calcul_distance_freinage()+DISTANCE_MARGE_VEHICULES)
                     { 
                         this.Accelere(1);
                     }
@@ -609,7 +609,7 @@ namespace IAAgents
         {
             if(this.GetRouteActuel().GetDirection()==Direction.EN_FACE)
             {
-                return ((this.GetY()-this.longueur)-this.vehiculeDevant.GetY());
+                return ((this.GetY()-vehiculeDevant.Getlongueur()-this.vehiculeDevant.GetY());
             }
             else
             {
